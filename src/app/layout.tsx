@@ -30,10 +30,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Portfolio Tố An",
-  description: "Khám phá portfolio cá nhân của Tố An - Sinh viên lớp 22SE2.",
+  description: "Khám phá portfolio cá nhân của Tố An – sinh viên lớp 22SE2, Trường Đại học CNTT & Truyền thông Việt – Hàn.",
   openGraph: {
     title: "Portfolio Tố An",
-    description: "Tác phẩm thiết kế, dự án web, và ý tưởng sáng tạo từ Tố An.",
+    description: "Tác phẩm thiết kế, dự án web, và ý tưởng sáng tạo từ Tố An – sinh viên lớp 22SE2, Đại học CNTT & Truyền thông Việt – Hàn.",
     url: "https://portfolio-to-an.vercel.app",
     siteName: "Portfolio Tố An",
     images: [
@@ -50,13 +50,13 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Portfolio Tố An",
-    description: "Tác phẩm thiết kế và dự án UI/UX nổi bật của Tố An.",
+    description: "Tác phẩm thiết kế và dự án UI/UX nổi bật của Tố An – sinh viên UIT-VKU.",
     images: ["https://portfolio-to-an.vercel.app/thumbnail.png"],
   },
   icons: {
-    icon: "/toa.ico",
-    shortcut: "/toa.ico",
-    apple: "/toa.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
