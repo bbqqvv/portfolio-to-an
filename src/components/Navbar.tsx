@@ -18,10 +18,10 @@ export default function Navbar() {
 
     return (
         <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md" style={{ backgroundColor: "#ffeed9", fontFamily: 'Work Sans, sans-serif' }}>
-            <div className="flex items-center justify-between px-6 py-4 md:px-10 ml-24">
+            <div className="container mx-auto flex items-center justify-between px-6 py-4 md:px-10 ">
 
                 {/* Navbar Desktop */}
-                <ul className="hidden md:flex space-x-8 font-semibold font-sans">
+                <ul className="hidden md:flex space-x-8 font-semibold font-sans ml-8">
                     {navItems.map(({ href, label }) => (
                         <li key={href}>
                             <a href={href} className="group relative block px-2 py-1">
@@ -43,9 +43,9 @@ export default function Navbar() {
                 <div className="md:hidden">
                     <button onClick={toggleMenu} className="p-2 rounded-md focus:outline-none">
                         {isOpen ? (
-                            <X className="h-6 w-6 text-teal-700" />
+                            <X className="h-6 w-6 text-black" />
                         ) : (
-                            <Menu className="h-6 w-6 text-teal-700" />
+                            <Menu className="h-6 w-6 text-black" />
                         )}
                     </button>
                 </div>

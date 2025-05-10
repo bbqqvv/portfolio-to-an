@@ -91,7 +91,7 @@ const RecentWork = () => {
     return (
         <motion.section
             ref={sectionRef}
-            className="py-20 relative overflow-hidden"
+            className="py-12 md:py-20 relative overflow-hidden"
             style={{ backgroundColor: '#ffe6cc' }}
             id="projects"
         >
@@ -106,10 +106,10 @@ const RecentWork = () => {
                 <div className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]" />
             </motion.div>
 
-            <div className="container mx-auto px-5 max-w-6xl relative">
+            <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
                 {/* Tiêu đề phần */}
                 <motion.div
-                    className="mb-20 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6"
+                    className="mb-12 md:mb-20 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 md:gap-6"
                     initial="hidden"
                     style={{ fontFamily: 'Eczar, sans-serif' }}
                     animate={controls}
@@ -117,39 +117,48 @@ const RecentWork = () => {
                 >
                     {/* Trái: Nhãn phần */}
                     <motion.div variants={itemVariants}>
-                        <span className="inline-block px-4 text-4xl py-1.5 font-bold rounded-full">
+                        <span className="inline-block px-4 text-2xl md:text-4xl py-1.5 font-bold rounded-full">
                             Công Việc Gần Đây
                         </span>
                     </motion.div>
                 </motion.div>
 
-                <div className="grid gap-14">
+                <div className="grid gap-8 md:gap-14">
                     {projects.map((project, index) => (
                         <motion.div
                             key={index}
-                            className="bg-white rounded-2xl overflow-hidden group transition-all duration-500"
+                            className="bg-white rounded-xl md:rounded-2xl overflow-hidden group transition-all duration-500"
                             style={{ backgroundColor: '#fff8f2' }}
                             initial="offscreen"
                             whileInView="onscreen"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-50px' }}
                             variants={projectVariants}
                         >
-                            <div className="md:flex flex-col md:flex-row h-full p-10">
+                            <div className="md:flex flex-col md:flex-row h-full p-4 sm:p-6 md:p-10">
                                 {/* Nội dung văn bản */}
                                 <div
-                                    className={`p-8 md:p-10 md:w-1/2 flex flex-col ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'
+                                    className={`p-4 sm:p-6 md:p-8 lg:p-10 md:w-1/2 flex flex-col ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'
                                         }`}
                                 >
-                                    <h3 className="text-3xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Work Sans, sans-serif' }}>
+                                    <h3
+                                        className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4"
+                                        style={{ fontFamily: 'Work Sans, sans-serif' }}
+                                    >
                                         {project.title}
                                     </h3>
-                                    <p className="text-gray-600 mb-8 leading-relaxed" style={{ fontFamily: 'Work Sans, sans-serif' }}>
+                                    <p
+                                        className="text-sm sm:text-base text-gray-600 mb-4 md:mb-8 leading-relaxed"
+                                        style={{ fontFamily: 'Work Sans, sans-serif' }}
+                                    >
                                         {project.description}
                                     </p>
 
                                     {/* Các nút hành động */}
-                                    <div className="flex gap-6 mt-auto">
-                                        <Link href="/project-detail" className="transition-transform duration-300 ease-out group-hover:scale-105 inline-block">
+                                    <div className="flex gap-4 md:gap-6 mt-auto">
+                                        <Link
+                                            href="/project-detail"
+                                            className="text-sm md:text-base transition-transform duration-300 ease-out group-hover:scale-105 inline-block"
+                                        >
                                             <div className="relative">Xem chi tiết →</div>
                                         </Link>
                                     </div>
@@ -157,16 +166,16 @@ const RecentWork = () => {
 
                                 {/* Hình ảnh với lớp phủ và hiệu ứng phóng to */}
                                 <div
-                                    className={`relative md:w-1/2 h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
-                                        } rounded-xl`}
+                                    className={`relative md:w-1/2 h-48 sm:h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
+                                        } rounded-lg md:rounded-xl overflow-hidden`}
                                 >
-                                    <div className="absolute inset-0 bg-white bg-opacity-60 pointer-events-none rounded-xl" />
+                                    <div className="absolute inset-0 bg-white bg-opacity-60 pointer-events-none rounded-lg md:rounded-xl" />
                                     <Image
                                         src={project.image}
                                         alt={project.title}
                                         fill
-                                        className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-xl"
-                                        sizes="(min-width: 768px) 50vw, 100vw"
+                                        className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-lg md:rounded-xl"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                                         priority={index === 0}
                                     />
                                 </div>

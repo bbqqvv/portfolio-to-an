@@ -52,14 +52,14 @@ export default function HeroSection() {
 
     return (
         <>
-            <div id="home" className="bg-[#ffeed9]">
-                <div className="container mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between">
-                    {/* Phần văn bản */}
+            <div id="home" className="bg-[#ffeed9] py-12 sm:py-16 md:py-20 lg:py-1">
+                <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex flex-col-reverse md:flex-row items-center justify-between gap-10">
+                    {/* Text Section */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="px-15"
+                        className="w-full text-center md:text-left"
                     >
                         <div className="text-sm font-mono mb-4 text-black min-h-[1.5rem]">
                             <span>{typedText}</span>
@@ -67,15 +67,15 @@ export default function HeroSection() {
                         </div>
 
                         <motion.h1
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
                             initial={{ opacity: 0, x: -40 }}
                             animate={{ opacity: 1, x: 0 }}
                             style={{ fontFamily: 'Eczar, sans-serif' }}
                             transition={{ delay: 0.3, duration: 0.8 }}
                         >
                             <span className="text-black">Lưu Thị Tố An</span><br />
-                            <span className="bg-gradient-to-r from-teal-500 to-emerald-400 bg-clip-text">
-                                {/* Có thể thêm một phần mô tả ở đây nếu muốn */}
+                            <span className="bg-gradient-to-r from-teal-500 to-emerald-400 bg-clip-text text-transparent">
+                                {/* mô tả */}
                             </span>
                         </motion.h1>
 
@@ -90,10 +90,10 @@ export default function HeroSection() {
                         </motion.p>
 
                         <motion.div
-                            className="flex flex-col sm:flex-row sm:gap-4 gap-3 w-full"
+                            className="flex flex-col sm:flex-row sm:gap-4 gap-3 w-full items-center md:items-start"
                             initial={{ opacity: 0, y: 20 }}
-                            style={{ fontFamily: 'Eczar, sans-serif' }}
                             animate={{ opacity: 1, y: 0 }}
+                            style={{ fontFamily: 'Eczar, sans-serif' }}
                             transition={{ delay: 0.7, duration: 0.8 }}
                         >
                             <Link
@@ -105,8 +105,6 @@ export default function HeroSection() {
                                 }}
                             >
                                 <span className="relative z-10">Xem CV</span>
-                                <span className="absolute inset-0 bg-gradient-to-r group-hover:opacity-0 transition-opacity duration-300" />
-                                <span className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 <ArrowRight
                                     className="ml-2 h-4 w-4 relative z-10 text-[#4e5e80] rounded-sm font-bold"
                                     style={{ backgroundColor: "#ffffff" }}
@@ -124,19 +122,26 @@ export default function HeroSection() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Phần Avatar */}
+                    {/* Avatar Section */}
                     <motion.div
-                        className="hidden md:flex justify-center mt-12 md:mt-0"
+                        className="w-full md:w-auto flex justify-center"
                         initial={{ opacity: 0, x: 40 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 1.1, duration: 0.8 }}
                     >
-                        <div className="relative w-72 h-72 md:w-96 md:h-96 lg:w-[30rem] lg:h-[40rem]">
-                            <Image src="/images/toan.png" alt="Tố An" layout="fill" objectFit="cover" priority />
+                        <div className="relative w-50 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[30rem] lg:h-[40rem]">
+                            <Image
+                                src="/images/toan.png"
+                                alt="Tố An"
+                                layout="fill"
+                                objectFit="cover"
+                                priority
+                            />
                         </div>
                     </motion.div>
-                </div >
+                </div>
             </div>
+
             <style jsx>{`
                 @keyframes blink {
                     0%, 100% { opacity: 1 }

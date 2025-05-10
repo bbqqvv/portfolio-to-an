@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import { ThemeProvider } from "next-themes";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
 
@@ -46,7 +45,6 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
           {/* <Loader /> */}
-          <Navbar />
           <CustomCursor />
           {children}
           <Footer />
