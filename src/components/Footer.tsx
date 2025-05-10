@@ -5,7 +5,7 @@ import { Twitter, Linkedin, Dribbble, Instagram } from 'lucide-react'
 
 export default function Footer() {
     return (
-        <footer id="contact" className=" bg-[#ffeed9] px-6 md:px-12 lg:px-20 flex items-center justify-center p-25">
+        <footer id="contact" className=" bg-[#ffeed9] px-6 md:px-12 lg:px-20 flex items-center justify-center p-25 dark:text-black">
             <div className="w-full max-w-6xl flex flex-col md:flex-row items-center md:items-start justify-between gap-12 text-center md:text-left">
 
                 {/* Left: Text + Button */}

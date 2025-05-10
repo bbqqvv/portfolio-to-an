@@ -15,7 +15,7 @@ export default function AboutMeComponent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true, margin: "-50px" }}
-                className="bg-transparent w-full lg:max-w-160 p-2 rounded-lg order-2 lg:order-1"
+                className="bg-transparent w-full lg:max-w-160 p-2 rounded-lg order-2 lg:order-1 dark:text-black"
             >
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4" style={{ fontFamily: 'Eczar, sans-serif' }}>
                     Một chút về tôi

@@ -117,7 +117,7 @@ const RecentWork = () => {
                 >
                     {/* Trái: Nhãn phần */}
                     <motion.div variants={itemVariants}>
-                        <span className="inline-block px-4 text-2xl md:text-4xl py-1.5 font-bold rounded-full">
+                        <span className="inline-block px-4 text-2xl md:text-4xl py-1.5 font-bold rounded-full dark:text-black">
                             Công Việc Gần Đây
                         </span>
                     </motion.div>
@@ -157,7 +157,7 @@ const RecentWork = () => {
                                     <div className="flex gap-4 md:gap-6 mt-auto">
                                         <Link
                                             href="/project-detail"
-                                            className="text-sm md:text-base transition-transform duration-300 ease-out group-hover:scale-105 inline-block"
+                                            className="text-sm dark:text-black md:text-base transition-transform duration-300 ease-out group-hover:scale-105 inline-block"
                                         >
                                             <div className="relative">Xem chi tiết →</div>
                                         </Link>

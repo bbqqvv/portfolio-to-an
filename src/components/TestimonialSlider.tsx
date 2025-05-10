@@ -56,7 +56,7 @@ export default function SkillSlider() {
                     {/* Hiển thị một kỹ năng trên mobile, hai kỹ năng trên desktop */}
                     <motion.div
                         key={`current-${currentIndex}`}
-                        className="w-full sm:w-1/2 rounded-lg p-4 sm:p-6  "
+                        className="w-full sm:w-1/2 rounded-lg p-4 sm:p-6 dark:text-black "
                         initial={{ opacity: 0, x: -100 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 100 }}
@@ -69,7 +69,7 @@ export default function SkillSlider() {
                     {/* Ẩn trên mobile, hiển thị trên desktop */}
                     <motion.div
                         key={`next-${(currentIndex + 1) % skills.length}`}
-                        className="hidden sm:block w-1/2 rounded-lg p-6  "
+                        className="hidden sm:block w-1/2 rounded-lg p-6  dark:text-black"
                         initial={{ opacity: 0, x: 100 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -100 }}
