@@ -54,10 +54,11 @@ export const metadata: Metadata = {
     images: ["https://portfolio-to-an.vercel.app/thumbnail.png"],
   },
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/icon.png",
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png", // nếu có
   },
+
 };
 
 
