@@ -34,7 +34,7 @@ export default function SkillSlider() {
     };
 
     return (
-        <div id="skill" className="flex flex-col items-center bg-[#FAF4E7] p-4 sm:p-6 md:p-8 rounded-lg w-full">
+        <div id="skill" className="flex flex-col items-center bg-[#FAF4E7] p-4 sm:p-6 md:p-8 w-full">
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center text-black" style={{ fontFamily: 'Eczar, sans-serif' }}>
                 Kỹ năng của tôi
             </h2>
