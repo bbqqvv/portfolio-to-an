@@ -44,15 +44,14 @@ export default function HeroSection() {
         return () => clearTimeout(timeout)
     }, [])
 
-    const handleScrollDown = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollIntoView({ behavior: 'smooth' })
-        }
-    }
-
     return (
         <>
-            <div id="home" className="bg-[#ffeed9] py-12 sm:py-16 md:py-20 lg:py-1">
+            <div id="home" className="bg-[#ffeed9] py-12 sm:py-16 md:py-20 lg:py-1"
+                style={{
+                    backgroundColor: 'var(--background-2)',
+                    color: 'var(--foreground)',
+                }}>
+
                 <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex flex-col-reverse md:flex-row items-center justify-between gap-10">
                     {/* Text Section */}
                     <motion.div
@@ -61,7 +60,9 @@ export default function HeroSection() {
                         transition={{ duration: 0.8 }}
                         className="w-full text-center md:text-left"
                     >
-                        <div className="text-sm font-mono mb-4 text-black min-h-[1.5rem]">
+                        <div className="text-sm font-mono mb-4 text-black min-h-[1.5rem]" style={{
+                            color: 'var(--text-card)'
+                        }}>
                             <span>{typedText}</span>
                             <span className="inline-block w-[1px] bg-teal-600 animate-blink ml-1" />
                         </div>
@@ -73,7 +74,9 @@ export default function HeroSection() {
                             style={{ fontFamily: 'Eczar, sans-serif' }}
                             transition={{ delay: 0.3, duration: 0.8 }}
                         >
-                            <span className="text-black">Lưu Thị Tố An</span><br />
+                            <span style={{
+                                color: 'var(--text-card)',
+                            }} className="text-black">Lưu Thị Tố An</span><br />
                             <span className="bg-gradient-to-r from-teal-500 to-emerald-400 bg-clip-text text-transparent">
                                 {/* mô tả */}
                             </span>
@@ -81,7 +84,7 @@ export default function HeroSection() {
 
                         <motion.p
                             className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8 font-sans font-semibold"
-                            style={{ fontFamily: 'Eczar, sans-serif' }}
+                            style={{ fontFamily: 'Eczar, sans-serif', color: 'var(--text-card)' }}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 0.8 }}
@@ -113,8 +116,11 @@ export default function HeroSection() {
 
                             <Link
                                 href="#about"
-                                className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 text-[#4e5e80] rounded-xl border-2 border-[#4e5e80] hover:bg-teal-50 text-base font-semibold"
-                                style={{ fontFamily: 'Work Sans, sans-serif' }}
+                                className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3  rounded-xl border-2 border-[#4e5e80] hover:bg-teal-50 text-base font-semibold hover:text-black"
+                                style={{
+                                    fontFamily: 'Work Sans, sans-serif',
+                                    borderColor: 'var(--btn-border)',
+                                }}
                             >
                                 <span>Về tôi</span>
                                 <ArrowRight className="ml-2 h-4 w-4 text-[#4e5e80] rounded-sm transform group-hover:translate-x-1 transition-transform" />

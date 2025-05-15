@@ -29,23 +29,18 @@ const RecentWork = () => {
             title: 'Ứng Dụng Sheepify',
             description:
                 'Thiết kế giao diện trạng thái cho ứng dụng Sheepify với phong cách kawaii và các hiệu ứng tương tác nhỏ giúp tăng 32% mức độ tương tác của người dùng.',
-            accentColor: 'bg-pink-100 text-pink-800',
             image: '/images/an1.png',
         },
         {
             title: 'Dashboard HoneyBunny',
             description:
                 'Bảng điều khiển quản lý dự án với màu sắc tươi sáng, hỗ trợ chế độ tối và hiển thị dữ liệu trực quan giúp tăng hiệu suất công việc.',
-            tags: ['Dashboard', 'Data Visualization', 'Dark Mode'],
-            accentColor: 'bg-amber-100 text-amber-800',
             image: '/images/projects/dep.png',
         },
         {
             title: 'Memrise Redesign',
             description:
                 'Tái thiết kế ứng dụng học ngôn ngữ với các yếu tố kawaii và tính năng gamification giúp tăng 27% người dùng hoạt động hàng ngày.',
-            tags: ['Redesign UX', 'Gamification', 'Ứng dụng di động'],
-            accentColor: 'bg-indigo-100 text-indigo-800',
             image: '/images/an2.png',
         },
     ];
@@ -92,10 +87,13 @@ const RecentWork = () => {
         <motion.section
             ref={sectionRef}
             className="py-12 md:py-20 relative overflow-hidden"
-            style={{ backgroundColor: '#ffe6cc' }}
             id="projects"
+            style={{
+                backgroundColor: 'var(--background-1)',
+                color: 'var(--foreground)',
+            }}
         >
-            {/* Các yếu tố nền nhẹ nhàng */}
+            {/* Hiệu ứng nền mờ nhẹ */}
             <motion.div
                 className="absolute top-0 left-0 w-full h-full pointer-events-none"
                 initial={{ opacity: 0 }}
@@ -115,9 +113,8 @@ const RecentWork = () => {
                     animate={controls}
                     variants={containerVariants}
                 >
-                    {/* Trái: Nhãn phần */}
                     <motion.div variants={itemVariants}>
-                        <span className="inline-block px-4 text-2xl md:text-4xl py-1.5 font-bold rounded-full dark:text-black">
+                        <span className="inline-block px-4 text-2xl md:text-4xl py-1.5 font-bold rounded-full">
                             Công Việc Gần Đây
                         </span>
                     </motion.div>
@@ -127,8 +124,8 @@ const RecentWork = () => {
                     {projects.map((project, index) => (
                         <motion.div
                             key={index}
-                            className="bg-white rounded-xl md:rounded-2xl overflow-hidden group transition-all duration-500"
-                            style={{ backgroundColor: '#fff8f2' }}
+                            className="rounded-xl md:rounded-2xl overflow-hidden group transition-all duration-500"
+                            style={{ backgroundColor: 'var(--card-bg)' }}
                             initial="offscreen"
                             whileInView="onscreen"
                             viewport={{ once: true, margin: '-50px' }}
@@ -141,35 +138,41 @@ const RecentWork = () => {
                                         }`}
                                 >
                                     <h3
-                                        className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4"
-                                        style={{ fontFamily: 'Work Sans, sans-serif' }}
+                                        className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4"
+                                        style={{
+                                            fontFamily: 'Work Sans, sans-serif',
+                                            color: 'var(--foreground)',
+                                        }}
                                     >
                                         {project.title}
                                     </h3>
                                     <p
-                                        className="text-sm sm:text-base text-gray-600 mb-4 md:mb-8 leading-relaxed"
-                                        style={{ fontFamily: 'Work Sans, sans-serif' }}
+                                        className="text-sm sm:text-base mb-4 md:mb-8 leading-relaxed"
+                                        style={{
+                                            fontFamily: 'Work Sans, sans-serif',
+                                            color: 'var(--text-card)',
+                                        }}
                                     >
                                         {project.description}
                                     </p>
 
-                                    {/* Các nút hành động */}
                                     <div className="flex gap-4 md:gap-6 mt-auto">
                                         <Link
                                             href="/project-detail"
-                                            className="text-sm dark:text-black md:text-base transition-transform duration-300 ease-out group-hover:scale-105 inline-block"
+                                            className="text-sm md:text-base transition-transform duration-300 ease-out group-hover:scale-105 inline-block"
+                                            style={{ color: 'var(--accent)' }}
                                         >
                                             <div className="relative">Xem chi tiết →</div>
                                         </Link>
                                     </div>
                                 </div>
 
-                                {/* Hình ảnh với lớp phủ và hiệu ứng phóng to */}
+                                {/* Hình ảnh */}
                                 <div
                                     className={`relative md:w-1/2 h-48 sm:h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
                                         } rounded-lg md:rounded-xl overflow-hidden`}
                                 >
-                                    <div className="absolute inset-0 bg-white bg-opacity-60 pointer-events-none rounded-lg md:rounded-xl" />
+                                    <div className="absolute inset-0 bg-white bg-opacity-60 dark:bg-opacity-40 pointer-events-none rounded-lg md:rounded-xl" />
                                     <Image
                                         src={project.image}
                                         alt={project.title}

@@ -4,6 +4,13 @@ import Link from 'next/link'
 import { FaFacebook, FaLinkedin, FaInstagram } from 'react-icons/fa'
 
 export default function SocialSidebar() {
+    const iconStyle = {
+        color: 'var(--btn-text)',
+        transition: 'color 0.3s ease',
+    }
+    const linkBaseClasses =
+        "p-2 rounded-full transition-colors"
+
     return (
         <motion.div
             className="fixed right-6 bottom-2 hidden md:flex flex-col items-center z-30"
@@ -26,10 +33,20 @@ export default function SocialSidebar() {
                     href="https://www.facebook.com/profile.php?id=100015843854925"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-700 transition-colors p-2 rounded-full hover:bg-gray-100/80"
+                    className={linkBaseClasses}
                     aria-label="Facebook"
+                    onMouseEnter={e => {
+
+
+                        e.currentTarget.style.color = 'var(--btn-hover-text)'
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                        e.currentTarget.style.color = 'var(--btn-text)'
+                    }}
+                    style={{ color: 'var(--btn-text)', borderColor: 'var(--btn-border)' }}
                 >
-                    <FaFacebook size={22} />
+                    <FaFacebook size={22} style={iconStyle} />
                 </Link>
             </motion.div>
 
@@ -42,10 +59,18 @@ export default function SocialSidebar() {
                     href="https://linkedin.com/in/yourusername"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-gray-100/80"
+                    className={linkBaseClasses}
                     aria-label="LinkedIn"
+                    onMouseEnter={e => {
+                        e.currentTarget.style.color = 'var(--btn-hover-text)'
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                        e.currentTarget.style.color = 'var(--btn-text)'
+                    }}
+                    style={{ color: 'var(--btn-text)', borderColor: 'var(--btn-border)' }}
                 >
-                    <FaLinkedin size={22} />
+                    <FaLinkedin size={22} style={iconStyle} />
                 </Link>
             </motion.div>
 
@@ -58,10 +83,18 @@ export default function SocialSidebar() {
                     href="https://instagram.com/yourusername"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-pink-600 transition-colors p-2 rounded-full hover:bg-gray-100/80"
+                    className={linkBaseClasses}
                     aria-label="Instagram"
+                    onMouseEnter={e => {
+                        e.currentTarget.style.color = 'var(--btn-hover-text)'
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                        e.currentTarget.style.color = 'var(--btn-text)'
+                    }}
+                    style={{ color: 'var(--btn-text)', borderColor: 'var(--btn-border)' }}
                 >
-                    <FaInstagram size={22} />
+                    <FaInstagram size={22} style={iconStyle} />
                 </Link>
             </motion.div>
 

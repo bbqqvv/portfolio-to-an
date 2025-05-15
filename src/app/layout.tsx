@@ -70,7 +70,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`} // Add Eczar variable here
+        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
           {/* <Loader /> */}
