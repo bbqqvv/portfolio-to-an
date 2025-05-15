@@ -7,7 +7,7 @@ export default function Footer() {
     return (
         <footer
             id="contact"
-            className="bg-[#ffeed9] dark:bg-[#372112] px-6 md:px-12 lg:px-20 flex items-center justify-center p-25 dark:text-[#fefae0] "
+            className="bg-[#ffeed9] dark:bg-[#372112] px-6 md:px-12 lg:px-20 flex items-center justify-center p-25 "
             style={{ backgroundColor: "var(--background-2)" }}
         >
             <div className="w-full max-w-6xl flex flex-col md:flex-row items-center md:items-start justify-between gap-12 text-center md:text-left">

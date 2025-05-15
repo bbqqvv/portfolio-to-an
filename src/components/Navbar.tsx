@@ -29,7 +29,8 @@ export default function Navbar() {
                         <li key={href} >
                             <a
                                 href={href}
-                                className="group relative block px-2 py-1 text-gray-900 dark:text-gray-100 transition-colors duration-300" style={{
+                                className="group relative block px-2 py-1 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+                                style={{
                                     color: 'var(--btn-text)',
                                 }}
                             >
@@ -54,8 +55,11 @@ export default function Navbar() {
                 <div className="md:hidden">
                     <button
                         onClick={toggleMenu}
-                        className="p-2 rounded-md focus:outline-none text-gray-900 dark:text-gray-100 transition-colors duration-300"
+                        className="p-2 rounded-md focus:outline-none text-gray-900 dark:text-black transition-colors duration-300"
                         aria-label="Toggle menu"
+                        style={{
+                            color: 'var(--btn-text)',
+                        }}
                     >
                         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                     </button>
@@ -64,13 +68,16 @@ export default function Navbar() {
 
             {/* Menu di động */}
             {isOpen && (
-                <div className="md:hidden px-6 pb-4 bg-[var(--background-2)] dark:bg-[var(--background-1)] transition-colors duration-300">
+                <div className="md:hidden px-6 pb-4 bg-[var(--background-2)]  transition-colors duration-300">
                     <ul className="flex flex-col space-y-4 font-semibold font-sans rounded-lg p-4">
                         {navItems.map(({ href, label }) => (
                             <li key={href}>
                                 <a
                                     href={href}
-                                    className="block text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                                    className="block text-gray-900 dark:text-black hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-200"
+                                    style={{
+                                        color: 'var(--btn-text)',
+                                    }}
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {label}
@@ -80,6 +87,7 @@ export default function Navbar() {
                     </ul>
                 </div>
             )}
+
         </nav>
     )
 }
