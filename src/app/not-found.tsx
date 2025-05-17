@@ -1,70 +1,68 @@
-"use client"
+"use client";
+
 import Image from 'next/image';
-import Head from 'next/head';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function Custom404() {
     return (
-        <>
-            <Head>
-                <title>404 - Page Not Found</title>
-                <meta name="description" content="The page you are looking for does not exist" />
-            </Head>
+        <main className="min-h-screen flex flex-col items-center justify-center px-4">
+            <motion.div
+                className="max-w-lg w-full space-y-6 text-center"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+                {/* Illustration */}
+                <motion.div
+                    animate={{
+                        y: [0, -10, 0],
+                    }}
+                    transition={{
+                        repeat: Infinity,
+                        duration: 4,
+                        ease: 'easeInOut',
+                    }}
+                >
+                    <Image
+                        src="/images/404.png"
+                        alt="404 Illustration"
+                        width={300}
+                        height={100}
+                        className="mx-auto"
+                        priority
+                    />
+                </motion.div>
 
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
-                <div className="max-w-lg w-full space-y-8">
-                    {/* Illustration with subtle scale animation */}
-                    <div className="animate-float">
-                        <Image
-                            src="/images/404.png" // Recommend using SVG for crisp quality
-                            alt="404 Illustration"
-                            width={400}
-                            height={300}
-                            className="mx-auto"
-                            priority
-                        />
-                    </div>
-
-                    {/* Content */}
-                    <div className="text-center space-y-4">
-                        <h1 className="text-5xl font-light text-gray-900 tracking-tight">
-                            404
-                        </h1>
-                        <h2 className="text-2xl font-medium text-gray-700">
-                            Trang không tìm thấy
-                        </h2>
-                        <p className="text-gray-500 max-w-md mx-auto leading-relaxed">
-                            Xin lỗi mình không tìm thấy trang bạn muốn...
-                        </p>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-                        <Link
-                            href="/"
-                            className="px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors duration-200 text-center"
-                        >
-                            Về nhà
-                        </Link>
-                        <Link
-                            href="/contact"
-                            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors duration-200 text-center"
-                        >
-                            Kết nối để hỗ trợ
-                        </Link>
-                    </div>
+                {/* Text content */}
+                <div>
+                    <h1 className="text-5xl font-semibold ">
+                        404
+                    </h1>
+                    <h2 className="text-2xl font-medium  mt-2">
+                        Trang không tìm thấy
+                    </h2>
+                    <p className=" mt-2">
+                        Xin lỗi, mình không thể tìm thấy trang bạn đang cố truy cập.
+                    </p>
                 </div>
-            </div>
 
-            <style jsx global>{`
-                @keyframes float {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-8px); }
-                }
-                .animate-float {
-                    animation: float 6s ease-in-out infinite;
-                }
-            `}</style>
-        </>
+                {/* Actions */}
+                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+                    <Link
+                        href="/"
+                        className="px-6 py-3 bg-black text-white rounded-xl hover:scale-[1.03] transition-transform duration-200"
+                    >
+                        Về trang chủ
+                    </Link>
+                    <Link
+                        href="/contact"
+                        className="px-6 py-3 border border-gray-400 rounded-xl hover:bg-gray-100  transition-colors duration-200"
+                    >
+                        Hỗ trợ kỹ thuật
+                    </Link>
+                </div>
+            </motion.div>
+        </main>
     );
 }
