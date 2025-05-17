@@ -1,28 +1,78 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const RecentWork = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
-    const controls = useAnimation();
-    const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ['start end', 'end start'],
-    });
-
-    const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
-    const opacityBg = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.5]);
+    const bgRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (isInView) {
-            controls.start('visible');
-        }
-    }, [isInView, controls]);
+        const ctx = gsap.context(() => {
+            // Hiệu ứng tiêu đề
+            gsap.fromTo(
+                '.section-title',
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top 90%',
+                    },
+                }
+            );
+
+            // Parallax nền mờ
+            if (bgRef.current) {
+                gsap.to(bgRef.current, {
+                    y: '10%',
+                    opacity: 0.5,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 0.4,
+                    },
+                });
+            }
+
+            // Card hiệu ứng mượt khi cuộn vào
+            const items = gsap.utils.toArray<HTMLElement>('.project-item');
+
+            items.forEach((item, index) => {
+                const fromX = index % 2 === 0 ? -60 : 60;
+
+                gsap.fromTo(
+                    item,
+                    { x: fromX, opacity: 0 },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        duration: 1,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none',
+                        },
+                    }
+                );
+            });
+
+            ScrollTrigger.refresh();
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
 
     const projects = [
         {
@@ -45,104 +95,53 @@ const RecentWork = () => {
         },
     ];
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.3,
-            },
-        },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: 'spring',
-                damping: 12,
-                stiffness: 100,
-                duration: 0.5,
-            },
-        },
-    };
-
-    const projectVariants = {
-        offscreen: { y: 80, opacity: 0 },
-        onscreen: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                bounce: 0.2,
-                duration: 0.8,
-            },
-        },
-    };
-
     return (
-        <motion.section
+        <section
             ref={sectionRef}
-            className="py-12 md:py-20 relative overflow-hidden"
+            className="py-16 md:py-24 relative overflow-hidden"
             id="projects"
             style={{
                 backgroundColor: 'var(--background-1)',
                 color: 'var(--foreground)',
             }}
         >
-            {/* Hiệu ứng nền mờ nhẹ */}
-            <motion.div
-                className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.08 }}
-                transition={{ duration: 1.5, ease: 'easeOut' }}
+            {/* Nền hiệu ứng mờ parallax */}
+            <div
+                className="absolute top-0 left-0 w-full h-full pointer-events-none will-change-transform"
+                ref={bgRef}
             >
                 <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]" />
                 <div className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]" />
-            </motion.div>
+            </div>
 
             <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
-                {/* Tiêu đề phần */}
-                <motion.div
-                    className="mb-12 md:mb-20 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 md:gap-6"
-                    initial="hidden"
+                {/* Tiêu đề section */}
+                <div
+                    className="mb-14 md:mb-20 section-title text-center md:text-left"
                     style={{ fontFamily: 'Eczar, sans-serif' }}
-                    animate={controls}
-                    variants={containerVariants}
                 >
-                    <motion.div variants={itemVariants}>
-                        <span className="inline-block px-4 text-2xl md:text-4xl py-1.5 font-bold rounded-full">
-                            Công Việc Gần Đây
-                        </span>
-                    </motion.div>
-                </motion.div>
+                    <span className="inline-block px-4 text-3xl md:text-5xl font-bold">
+                        Công Việc Gần Đây
+                    </span>
+                </div>
 
-                <div className="grid gap-8 md:gap-14">
+                {/* Danh sách dự án */}
+                <div className="grid gap-12 md:gap-16">
                     {projects.map((project, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            className="rounded-xl md:rounded-2xl overflow-hidden group transition-all duration-500"
+                            className="project-item opacity-0 transform rounded-xl md:rounded-2xl overflow-hidden group transition-all"
                             style={{ backgroundColor: 'var(--card-bg)' }}
-                            initial="offscreen"
-                            whileInView="onscreen"
-                            viewport={{ once: true, margin: '-50px' }}
-                            variants={projectVariants}
                         >
                             <div className="md:flex flex-col md:flex-row h-full p-4 sm:p-6 md:p-10">
-                                {/* Nội dung văn bản */}
+                                {/* Text */}
                                 <div
                                     className={`p-4 sm:p-6 md:p-8 lg:p-10 md:w-1/2 flex flex-col ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'
                                         }`}
                                 >
                                     <h3
                                         className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4"
-                                        style={{
-                                            fontFamily: 'Work Sans, sans-serif',
-                                            color: 'var(--foreground)',
-                                        }}
+                                        style={{ fontFamily: 'Work Sans, sans-serif' }}
                                     >
                                         {project.title}
                                     </h3>
@@ -156,13 +155,13 @@ const RecentWork = () => {
                                         {project.description}
                                     </p>
 
-                                    <div className="flex gap-4 md:gap-6 mt-auto">
+                                    <div className="mt-auto">
                                         <Link
-                                            href="/project-detail"
-                                            className="text-sm md:text-base transition-transform duration-300 ease-out group-hover:scale-105 inline-block"
+                                            href="/blog/1"
+                                            className="text-sm md:text-base font-medium transition-transform duration-300 ease-out group-hover:translate-x-1 inline-block"
                                             style={{ color: 'var(--accent)' }}
                                         >
-                                            <div className="relative">Xem chi tiết →</div>
+                                            Xem chi tiết →
                                         </Link>
                                     </div>
                                 </div>
@@ -177,17 +176,17 @@ const RecentWork = () => {
                                         src={project.image}
                                         alt={project.title}
                                         fill
-                                        className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-lg md:rounded-xl"
+                                        className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-lg md:rounded-xl will-change-transform"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                                         priority={index === 0}
                                     />
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 };
 

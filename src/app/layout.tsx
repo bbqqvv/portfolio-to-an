@@ -5,6 +5,8 @@ import CustomCursor from "@/components/CustomCursor";
 import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import { ChibiBackground } from "@/components/ui/chibi-background";
 
 // Import Eczar font
 const eczar = Eczar({
@@ -73,8 +75,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
+          <Navbar />
           {/* <Loader /> */}
           <CustomCursor />
+          <ChibiBackground />
           {children}
           <Footer />
         </ThemeProvider>
