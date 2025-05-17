@@ -86,8 +86,8 @@ export default function TableOfContents({ contentMarkdown }: { contentMarkdown: 
     return (
         <nav className="sticky top-28 max-w-xs hidden xl:block h-[calc(100vh-10rem)] overflow-y-auto pr-4">
             <div className="border-l-2 border-gray-200 pl-6 py-2">
-                <p className="font-semibold mb-4 text-lg text-gray-800">📑 Mục lục</p>
-                <ul className="space-y-2 text-sm text-gray-600">
+                <p className="font-semibold mb-4 text-lg ">📑 Mục lục</p>
+                <ul className="space-y-2 text-sm ">
                     {headings.map(({ id, text, level }) => (
                         <li
                             key={id}

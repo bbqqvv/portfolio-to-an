@@ -27,18 +27,46 @@ export default function Navbar() {
         }
     }
 
+    // Animate desktop nav items on mount
     useEffect(() => {
-        if (navItemRefs.current.length) {
-            gsap.from(navItemRefs.current, {
+        const ctx = gsap.context(() => {
+            if (navItemRefs.current.length) {
+                gsap.from(navItemRefs.current, {
+                    opacity: 0,
+                    y: 10,
+                    stagger: 0.15,
+                    duration: 0.6,
+                    ease: 'power2.out',
+                })
+            }
+        })
+
+        return () => ctx.revert()
+    }, [])
+
+    // Animate mobile menu on open
+    useEffect(() => {
+        if (isOpen && menuRef.current) {
+            const items = menuRef.current.querySelectorAll('li')
+
+            gsap.from(menuRef.current, {
+                opacity: 0,
+                y: -10,
+                duration: 0.3,
+                ease: 'power2.out',
+            })
+
+            gsap.from(items, {
                 opacity: 0,
                 y: 10,
-                stagger: 0.15,
-                duration: 0.6,
+                stagger: 0.1,
+                duration: 0.4,
                 ease: 'power2.out',
             })
         }
-    }, [])
+    }, [isOpen])
 
+    // Close mobile menu on click outside
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -48,8 +76,6 @@ export default function Navbar() {
 
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside)
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside)
         }
 
         return () => {
@@ -68,7 +94,7 @@ export default function Navbar() {
                     {navItems.map(({ id, label }, index) => (
                         <li
                             key={id}
-                            ref={(el) => { navItemRefs.current[index] = el!; }}
+                            ref={(el) => { navItemRefs.current[index] = el! }}
                             className="relative group cursor-pointer"
                         >
                             <button
@@ -94,7 +120,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Logo + Theme */}
-                <div className="flex items-center gap-4 ">
+                <div className="flex items-center gap-4">
                     <ThemeToggle />
                     <Link href="/" className="font-bold text-lg" style={{ color: 'var(--btn-text)' }}>
                         Tố An ❤️

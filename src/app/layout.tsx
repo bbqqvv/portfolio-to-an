@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import { ChibiBackground } from "@/components/ui/chibi-background";
+import PageTransition from "@/components/ui/page-transition";
 
 // Import Eczar font
 const eczar = Eczar({
@@ -76,13 +77,15 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
           <Navbar />
-          {/* <Loader /> */}
           <CustomCursor />
           <ChibiBackground />
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
+
           <Footer />
         </ThemeProvider>
       </body>
-    </html>
+    </html >
   );
 }

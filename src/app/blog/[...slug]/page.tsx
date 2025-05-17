@@ -1,5 +1,6 @@
 import { getPostBySlug } from "@/lib/api"
 import BlogPageClient from "./components/BlogPageClient"
+import PageTransition from "@/components/ui/page-transition"
 
 interface Props {
     params: { slug: string }
@@ -7,5 +8,10 @@ interface Props {
 
 export default async function BlogPage({ params }: Props) {
     const { metadata, content } = getPostBySlug(params.slug)
-    return <BlogPageClient metadata={metadata} contentMarkdown={content} slug={params.slug} />
+
+    return (
+        <PageTransition>
+            <BlogPageClient metadata={metadata} contentMarkdown={content} slug={params.slug} />
+        </PageTransition>
+    )
 }

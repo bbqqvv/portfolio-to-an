@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { works } from '@/data/works';
+import AnimatedLink from './AnimatedLink';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -137,14 +138,13 @@ const RecentWork = () => {
                                     </p>
 
                                     <div className="mt-auto">
-                                        <Link
+                                        <AnimatedLink
                                             href={`/blog/${work.slug}`}
                                             className="text-sm md:text-base font-medium transition-transform duration-300 ease-out group-hover:translate-x-1 inline-block"
                                             style={{ color: 'var(--accent)' }}
                                         >
                                             Xem chi tiết →
-                                        </Link>
-
+                                        </AnimatedLink>
                                     </div>
                                 </div>
 
