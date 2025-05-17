@@ -76,7 +76,7 @@ export default function Navbar() {
                                 className="text-base text-[var(--btn-text)] transition-colors duration-300"
                             >
                                 {label}
-                                <span className="block h-0.5 bg-teal-500 dark:bg-teal-400 max-w-0 group-hover:max-w-full transition-all duration-300 ease-in-out"></span>
+                                <span className="block h-0.5 bg-gray-500 max-w-0 group-hover:max-w-full transition-all duration-300 ease-in-out"></span>
                             </button>
                         </li>
                     ))}

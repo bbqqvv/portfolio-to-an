@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
+import { works } from '@/data/works';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,26 +75,6 @@ const RecentWork = () => {
         return () => ctx.revert();
     }, []);
 
-    const projects = [
-        {
-            title: 'Ứng Dụng Sheepify',
-            description:
-                'Thiết kế giao diện trạng thái cho ứng dụng Sheepify với phong cách kawaii và các hiệu ứng tương tác nhỏ giúp tăng 32% mức độ tương tác của người dùng.',
-            image: '/images/an1.png',
-        },
-        {
-            title: 'Dashboard HoneyBunny',
-            description:
-                'Bảng điều khiển quản lý dự án với màu sắc tươi sáng, hỗ trợ chế độ tối và hiển thị dữ liệu trực quan giúp tăng hiệu suất công việc.',
-            image: '/images/projects/dep.png',
-        },
-        {
-            title: 'Memrise Redesign',
-            description:
-                'Tái thiết kế ứng dụng học ngôn ngữ với các yếu tố kawaii và tính năng gamification giúp tăng 27% người dùng hoạt động hàng ngày.',
-            image: '/images/an2.png',
-        },
-    ];
 
     return (
         <section
@@ -127,7 +108,7 @@ const RecentWork = () => {
 
                 {/* Danh sách dự án */}
                 <div className="grid gap-12 md:gap-16">
-                    {projects.map((project, index) => (
+                    {works.map((work, index) => (
                         <div
                             key={index}
                             className="project-item opacity-0 transform rounded-xl md:rounded-2xl overflow-hidden group transition-all"
@@ -143,7 +124,7 @@ const RecentWork = () => {
                                         className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4"
                                         style={{ fontFamily: 'Work Sans, sans-serif' }}
                                     >
-                                        {project.title}
+                                        {work.title}
                                     </h3>
                                     <p
                                         className="text-sm sm:text-base mb-4 md:mb-8 leading-relaxed"
@@ -152,17 +133,18 @@ const RecentWork = () => {
                                             color: 'var(--text-card)',
                                         }}
                                     >
-                                        {project.description}
+                                        {work.description}
                                     </p>
 
                                     <div className="mt-auto">
                                         <Link
-                                            href="/blog/1"
+                                            href={`/blog/${work.slug}`}
                                             className="text-sm md:text-base font-medium transition-transform duration-300 ease-out group-hover:translate-x-1 inline-block"
                                             style={{ color: 'var(--accent)' }}
                                         >
                                             Xem chi tiết →
                                         </Link>
+
                                     </div>
                                 </div>
 
@@ -173,8 +155,8 @@ const RecentWork = () => {
                                 >
                                     <div className="absolute inset-0 bg-white bg-opacity-60 dark:bg-opacity-40 pointer-events-none rounded-lg md:rounded-xl" />
                                     <Image
-                                        src={project.image}
-                                        alt={project.title}
+                                        src={work.image}
+                                        alt={work.title}
                                         fill
                                         className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-lg md:rounded-xl will-change-transform"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
