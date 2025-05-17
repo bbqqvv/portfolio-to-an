@@ -13,7 +13,7 @@ export default function SocialSidebar() {
 
     return (
         <motion.div
-            className="fixed right-6 bottom-2 hidden md:flex flex-col items-center z-30"
+            className="fixed  right-6 bottom-2 hidden md:flex flex-col items-center z-30"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

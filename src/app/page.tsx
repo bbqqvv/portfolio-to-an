@@ -13,8 +13,6 @@ export default function Home() {
       <RecentWork />
       <TestimonialSlider />
       <AboutMeComponent />
-      <SocialSidebar />
-
     </>
   )
 }
