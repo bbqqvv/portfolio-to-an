@@ -3,47 +3,56 @@
 import React, { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 
 export default function AboutMeComponent() {
-    const textRef = useRef<HTMLDivElement>(null)
-    const imgRef = useRef<HTMLDivElement>(null)
-    const isTextInView = useInView(textRef, { once: true, margin: '-100px' })
-    const isImgInView = useInView(imgRef, { once: true, margin: '-100px' })
+    const containerRef = useRef<HTMLDivElement>(null)
+    const isInView = useInView(containerRef, { once: true, amount: 0.3 })
+    const reduceMotion = useReducedMotion()
 
     const fadeInFromBottom = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0 },
     }
 
+    const transition = {
+        duration: 0.7,
+        ease: 'easeOut',
+    }
+
     return (
         <div
             id="about"
+            ref={containerRef}
             className="flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 md:p-8 lg:p-1 gap-6 md:gap-8 lg:gap-12"
             style={{ backgroundColor: 'var(--background-1)' }}
         >
             {/* Text content */}
             <motion.div
-                ref={textRef}
                 className="w-full lg:max-w-180 p-2 rounded-lg order-2 lg:order-1"
                 style={{ willChange: 'opacity, transform' }}
                 variants={fadeInFromBottom}
                 initial="hidden"
-                animate={isTextInView ? 'visible' : 'hidden'}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
+                animate={reduceMotion ? 'visible' : isInView ? 'visible' : 'hidden'}
+                transition={transition}
             >
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 font-[Eczar]">
                     Một chút về tôi
                 </h2>
                 <div className="font-[Work_Sans] text-base sm:text-lg md:text-xl space-y-4">
                     <p>
-                        Tôi là Tố An, hiện đang là sinh viên tại Việt Nam. Tôi đang theo học chuyên ngành thiết kế giao diện người dùng và phát triển web.
+                        Tôi là Tố An, hiện đang là sinh viên tại Việt Nam. Tôi đang theo học
+                        chuyên ngành thiết kế giao diện người dùng và phát triển web.
                     </p>
                     <p>
-                        Tôi yêu thích việc sáng tạo và phát triển các sản phẩm web, đặc biệt là thiết kế giao diện người dùng và tối ưu hóa trải nghiệm người dùng. Mặc dù tôi còn là sinh viên, nhưng tôi đã thực hiện nhiều dự án cá nhân và tham gia các khóa học thiết kế.
+                        Tôi yêu thích việc sáng tạo và phát triển các sản phẩm web, đặc biệt
+                        là thiết kế giao diện người dùng và tối ưu hóa trải nghiệm người
+                        dùng. Mặc dù tôi còn là sinh viên, nhưng tôi đã thực hiện nhiều dự
+                        án cá nhân và tham gia các khóa học thiết kế.
                     </p>
                     <p>
-                        Ngoài công việc học tập và thiết kế, tôi còn thích đọc sách, viết lách và khám phá những sở thích mới.
+                        Ngoài công việc học tập và thiết kế, tôi còn thích đọc sách, viết
+                        lách và khám phá những sở thích mới.
                     </p>
                 </div>
                 <Link href="/contact" aria-label="Liên hệ với tôi" passHref>
@@ -57,13 +66,17 @@ export default function AboutMeComponent() {
                             cursor: 'pointer',
                             transformOrigin: 'center',
                         }}
-                        whileHover={{
-                            backgroundColor: 'var(--btn-hover-bg)',
-                            color: 'var(--btn-hover-text)',
-                            scale: 1.05,
-                            transition: { duration: 0.3, ease: 'easeOut' },
-                        }}
-                        whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                        whileHover={
+                            reduceMotion
+                                ? {}
+                                : {
+                                    backgroundColor: 'var(--btn-hover-bg)',
+                                    color: 'var(--btn-hover-text)',
+                                    scale: 1.05,
+                                    transition: { duration: 0.3, ease: 'easeOut' },
+                                }
+                        }
+                        whileTap={!reduceMotion ? { scale: 0.95, transition: { duration: 0.1 } } : {}}
                     >
                         Liên hệ với tôi
                     </motion.button>
@@ -72,13 +85,12 @@ export default function AboutMeComponent() {
 
             {/* Image section */}
             <motion.div
-                ref={imgRef}
                 className="relative w-full xs:w-4/5 sm:w-2/3 md:w-1/2 lg:w-[400px] xl:w-[400px] h-[400px] sm:h-[350px] md:h-[400px] lg:h-[500px] xl:h-[600px] order-1 lg:order-2"
                 style={{ willChange: 'opacity, transform' }}
                 variants={fadeInFromBottom}
                 initial="hidden"
-                animate={isImgInView ? 'visible' : 'hidden'}
-                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+                animate={reduceMotion ? 'visible' : isInView ? 'visible' : 'hidden'}
+                transition={{ ...transition, delay: 0.2 }}
             >
                 <Image
                     src="/images/anbum_02.png"

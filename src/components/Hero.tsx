@@ -1,69 +1,73 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function HeroSection() {
-    const fullText = 'Xin chào, mình là'
-    const [typedText, setTypedText] = useState('')
-    const typingSpeed = 80
-    const pauseTime = 1000
+    const fullText = 'Xin chào, mình là';
+    const [typedText, setTypedText] = useState('');
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        let index = 0
-        let isDeleting = false
-        let timeout: NodeJS.Timeout
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Disable typing effect on mobile
+    useEffect(() => {
+        if (isMobile) {
+            setTypedText(fullText);
+            return;
+        }
+
+        let index = 0;
+        let isDeleting = false;
+        let timeout: NodeJS.Timeout;
 
         const type = () => {
             if (!isDeleting) {
                 if (index < fullText.length) {
-                    setTypedText(fullText.slice(0, index + 1))
-                    index++
-                    timeout = setTimeout(type, typingSpeed)
+                    setTypedText(fullText.slice(0, index + 1));
+                    index++;
+                    timeout = setTimeout(type, 80);
                 } else {
-                    isDeleting = true
-                    timeout = setTimeout(type, pauseTime)
+                    isDeleting = true;
+                    timeout = setTimeout(type, 1000);
                 }
             } else {
                 if (index > 0) {
-                    setTypedText(fullText.slice(0, index - 1))
-                    index--
-                    timeout = setTimeout(type, typingSpeed / 2)
+                    setTypedText(fullText.slice(0, index - 1));
+                    index--;
+                    timeout = setTimeout(type, 40);
                 } else {
-                    isDeleting = false
-                    timeout = setTimeout(type, typingSpeed)
+                    isDeleting = false;
+                    timeout = setTimeout(type, 80);
                 }
             }
-        }
+        };
 
-        type()
-        return () => clearTimeout(timeout)
-    }, [])
+        type();
+        return () => clearTimeout(timeout);
+    }, [isMobile]);
 
     const scrollToSection = (id: string) => {
-        const section = document.getElementById(id)
+        const section = document.getElementById(id);
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth' })
+            section.scrollIntoView({ behavior: 'smooth' });
         }
-    }
+    };
 
-    const fadeUp = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-    }
-
-    const fadeLeft = {
-        hidden: { opacity: 0, x: -40 },
-        visible: { opacity: 1, x: 0 },
-    }
-
-    const fadeRight = {
-        hidden: { opacity: 0, x: 40 },
-        visible: { opacity: 1, x: 0 },
-    }
+    const fadeVariant = (axis: 'x' | 'y', dir: number) => ({
+        hidden: { opacity: 0, [axis]: dir * 40 },
+        visible: { opacity: 1, [axis]: 0 },
+    });
 
     return (
         <>
@@ -79,22 +83,24 @@ export default function HeroSection() {
                     {/* Text Section */}
                     <div className="w-full text-center md:text-left">
                         <motion.div
-                            variants={fadeUp}
+                            variants={fadeVariant('y', 1)}
                             initial="hidden"
                             animate="visible"
-                            transition={{ duration: 0.8, ease: 'easeOut' }}
+                            transition={{ duration: 0.6 }}
                             className="text-sm font-mono mb-4 text-black min-h-[1.5rem]"
                             style={{ color: 'var(--text-card)' }}
                         >
                             <span>{typedText}</span>
-                            <span className="inline-block w-[1px] bg-teal-600 animate-blink ml-1" />
+                            {!isMobile && (
+                                <span className="inline-block w-[1px] bg-teal-600 animate-blink ml-1" />
+                            )}
                         </motion.div>
 
                         <motion.h1
-                            variants={fadeLeft}
+                            variants={fadeVariant('x', -1)}
                             initial="hidden"
                             animate="visible"
-                            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
                             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
                             style={{ fontFamily: 'Eczar, sans-serif', color: 'var(--text-card)' }}
                         >
@@ -105,10 +111,10 @@ export default function HeroSection() {
                         </motion.h1>
 
                         <motion.p
-                            variants={fadeUp}
+                            variants={fadeVariant('y', 1)}
                             initial="hidden"
                             animate="visible"
-                            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
                             className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8 font-sans font-semibold"
                             style={{
                                 fontFamily: 'Eczar, sans-serif',
@@ -119,10 +125,10 @@ export default function HeroSection() {
                         </motion.p>
 
                         <motion.div
-                            variants={fadeUp}
+                            variants={fadeVariant('y', 1)}
                             initial="hidden"
                             animate="visible"
-                            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.6 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
                             className="flex flex-col sm:flex-row sm:gap-4 gap-3 w-full items-center md:items-start"
                             style={{ fontFamily: 'Eczar, sans-serif' }}
                         >
@@ -157,19 +163,20 @@ export default function HeroSection() {
 
                     {/* Avatar Section */}
                     <motion.div
-                        variants={fadeRight}
+                        variants={fadeVariant('x', 1)}
                         initial="hidden"
                         animate="visible"
-                        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.8 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
                         className="w-full md:w-auto flex justify-center"
                     >
-                        <div className="relative w-50 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[30rem] lg:h-[40rem]">
+                        <div className="relative w-44 h-48 sm:w-60 sm:h-60 md:w-80 md:h-80 lg:w-[30rem] lg:h-[40rem]">
                             <Image
                                 src="/images/toan.png"
                                 alt="Tố An"
                                 layout="fill"
                                 objectFit="cover"
-                                priority
+                                loading={isMobile ? 'lazy' : 'eager'}
+                                priority={!isMobile}
                             />
                         </div>
                     </motion.div>
@@ -187,5 +194,5 @@ export default function HeroSection() {
                 }
             `}</style>
         </>
-    )
+    );
 }
