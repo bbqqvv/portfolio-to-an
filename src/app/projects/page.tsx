@@ -1,95 +1,378 @@
-"use client";
+"use client"
 
-import React, { useEffect, useState } from "react";
+import { useState, useMemo, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import Image from "next/image"
+import Link from "next/link"
+import { Github, ExternalLink, Filter, Lock, Search, X } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { allProjects, Project } from "@/data/projects"
+import PageTransition from "@/components/PageTransition"
 
-import { AnimatedCard } from "@/components/ui/animated-card";
-import { projects } from "@/data/projects";
-import ProjectFilters from "./components/ProjectFilter";
-import ProjectCard from "./components/ProjectCard";
+export default function ProjectsPage() {
+    const [filter, setFilter] = useState<string>("all")
+    const [searchQuery, setSearchQuery] = useState<string>("")
+    const [visibleProjects, setVisibleProjects] = useState<number>(6)
+    const [isSearching, setIsSearching] = useState<boolean>(false)
 
-const PAGE_SIZE = 3;
+    const filteredProjects = useMemo(() => {
+        return allProjects.filter((project) => {
+            // Filter by category
+            if (filter !== "all" && project.category !== filter) return false
 
-export default function ProjectPage() {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-    const [activeFilter, setActiveFilter] = useState("All");
+            // Search in title, description and technologies
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase()
+                const inTitle = project.title.toLowerCase().includes(query)
+                const inDesc = project.description.toLowerCase().includes(query)
+                const inTech = project.technologies.some(tech =>
+                    tech.toLowerCase().includes(query)
+                )
+                if (!inTitle && !inDesc && !inTech) return false
+            }
+            return true
+        })
+    }, [filter, searchQuery])
 
-    const filteredProjects = projects.filter((p) => {
-        const searchLower = searchTerm.toLowerCase();
-        const matchesSearch =
-            p.title.toLowerCase().includes(searchLower) ||
-            p.description.toLowerCase().includes(searchLower) ||
-            p.tags.some((tag) => tag.toLowerCase().includes(searchLower));
-        const matchesFilter =
-            activeFilter === "All" || p.tags.some((tag) => tag.toLowerCase().includes(activeFilter.toLowerCase()));
-        return matchesSearch && matchesFilter;
-    });
+    const projectsToShow = filteredProjects.slice(0, visibleProjects)
+    const hasMoreProjects = filteredProjects.length > visibleProjects
 
-    const visibleProjects = filteredProjects.slice(0, visibleCount);
-    const allTags = Array.from(new Set(projects.flatMap((p) => p.tags)));
-    const filters = ["All", ...allTags];
+    const loadMoreProjects = () => setVisibleProjects(prev => prev + 3)
 
+    // Reset visible projects when filter or search changes
     useEffect(() => {
-        setVisibleCount(PAGE_SIZE);
-    }, [searchTerm, activeFilter]);
+        setVisibleProjects(6)
+    }, [filter, searchQuery])
 
     return (
-        <main className="min-h-screen transition-colors duration-300">
-            <section className="max-w-7xl mx-auto py-12 md:py-20 px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12 md:mb-16">
-                    <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-[#fefae0] mb-4">
-                        My{" "}
-                        <span className="text-primary dark:text-primary-light underline decoration-4 decoration-primary dark:decoration-primary-light underline-offset-8">
-                            Projects
-                        </span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-                        Each project is a unique piece of development, crafted with attention to detail and modern technologies.
-                    </p>
+        <div className="mx-auto container max-w-7xl px-4 md:px-8 lg:px-12 py-12 md:py-20">
+            {/* Hero Section */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="max-w-4xl mx-auto mb-16 text-center"
+            >
+                <Badge variant="outline" className="mb-4 text-sm font-medium border-black/20">
+                    Portfolio Collection
+                </Badge>
+                <h1
+                    className="text-4xl md:text-5xl font-bold mb-6 text-black"
+                    onMouseEnter={() => window.enterTextCursor?.()}
+                    onMouseLeave={() => window.leaveTextCursor?.()}
+                >
+                    Crafted with Precision
+                </h1>
+                <p className="text-xl text-black/80">
+                    A curated selection of my technical projects and creative solutions.
+                </p>
+            </motion.div>
 
-                    <ProjectFilters
-                        filters={filters}
-                        activeFilter={activeFilter}
-                        setActiveFilter={setActiveFilter}
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
+            {/* Search and Filter Bar */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex flex-col md:flex-row gap-4 mb-8 p-4 rounded-xl shadow-sm border border-gray-100"
+            >
+                {/* Search Input */}
+                <div className="relative flex-1">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Search className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search projects..."
+                        value={searchQuery}
+                        onChange={(e) => {
+                            setSearchQuery(e.target.value)
+                            setIsSearching(e.target.value.length > 0)
+                        }}
+                        className="block w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg  focus:ring-2 focus:ring-black focus:border-transparent"
                     />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    {visibleProjects.length === 0 ? (
-                        <div className="col-span-full text-center py-16 md:py-20">
-                            <div className="text-gray-400 dark:text-gray-500 mb-4 text-lg">No projects found matching your criteria</div>
-                            <button
-                                onClick={() => {
-                                    setSearchTerm("");
-                                    setActiveFilter("All");
-                                }}
-                                className="text-primary dark:text-primary-light hover:underline font-medium transition-colors"
-                            >
-                                Clear all filters
-                            </button>
-                        </div>
-                    ) : (
-                        visibleProjects.map((project, idx) => (
-                            <AnimatedCard key={project.title} className="project-card" delay={Math.min(idx * 0.1, 0.6)}>
-                                <ProjectCard project={project} />
-                            </AnimatedCard>
-                        ))
+                    {searchQuery && (
+                        <button
+                            onClick={() => {
+                                setSearchQuery("")
+                                setIsSearching(false)
+                            }}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        >
+                            <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                        </button>
                     )}
                 </div>
 
-                {visibleCount < filteredProjects.length && (
-                    <div className="text-center mt-12">
-                        <button
-                            onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-                            className="inline-block bg-primary dark:bg-primary-light hover:bg-primary-dark dark:hover:bg-primary transition-colors text-white font-semibold py-3 px-8 rounded-xl shadow-md"
-                        >
-                            Load More
-                        </button>
-                    </div>
+                {/* Category Filter */}
+                <div className="flex items-center gap-3 w-full md:w-auto">
+                    <Filter className="h-5 w-5 text-gray-400" />
+                    <Select
+                        value={filter}
+                        onValueChange={(value) => setFilter(value)}
+                    >
+                        <SelectTrigger className="w-full md:w-[180px]">
+                            <SelectValue placeholder="All Categories" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Projects</SelectItem>
+                            <SelectItem value="backend">Backend</SelectItem>
+                            <SelectItem value="frontend">Frontend</SelectItem>
+                            <SelectItem value="module">Module</SelectItem>
+                            <SelectItem value="tool">Tool</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </motion.div>
+
+            {/* Active Filters Indicator */}
+            {(filter !== "all" || isSearching) && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mb-6 flex flex-wrap items-center gap-3"
+                >
+                    <span className="text-sm text-gray-500">Active filters:</span>
+
+                    {filter !== "all" && (
+                        <Badge className="flex items-center gap-2 bg-gray-100 text-gray-800">
+                            {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                            <button
+                                onClick={() => setFilter("all")}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                <X className="h-3 w-3" />
+                            </button>
+                        </Badge>
+                    )}
+
+                    {isSearching && (
+                        <Badge className="flex items-center gap-2 bg-gray-100 text-gray-800">
+                            Search: "{searchQuery}"
+                            <button
+                                onClick={() => {
+                                    setSearchQuery("")
+                                    setIsSearching(false)
+                                }}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                <X className="h-3 w-3" />
+                            </button>
+                        </Badge>
+                    )}
+                </motion.div>
+            )}
+
+            {/* Projects Count */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mb-6 text-sm text-gray-500"
+            >
+                Showing {Math.min(projectsToShow.length, filteredProjects.length)} of {filteredProjects.length} projects
+                {filteredProjects.length !== allProjects.length && (
+                    <button
+                        onClick={() => {
+                            setFilter("all")
+                            setSearchQuery("")
+                            setIsSearching(false)
+                        }}
+                        className="ml-2 text-black underline hover:no-underline"
+                    >
+                        Clear all filters
+                    </button>
                 )}
-            </section>
-        </main>
-    );
+            </motion.div>
+
+            {/* Projects Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <AnimatePresence mode="wait">
+                    {projectsToShow.length > 0 ? (
+                        projectsToShow.map((project, index) => (
+                            <ProjectCard key={project.title} project={project} index={index} />
+                        ))
+                    ) : (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="col-span-full text-center py-12"
+                        >
+                            <div className="max-w-md mx-auto">
+                                <Search className="h-12 w-12 mx-auto text-gray-300 mb-4" />
+                                <h3 className="text-xl font-medium mb-2 text-gray-800">No projects found</h3>
+                                <p className="text-gray-500 mb-4">
+                                    Try adjusting your search or filter criteria.
+                                </p>
+                                <button
+                                    onClick={() => {
+                                        setFilter("all")
+                                        setSearchQuery("")
+                                        setIsSearching(false)
+                                    }}
+                                    className="text-sm text-black underline hover:no-underline"
+                                >
+                                    Clear all filters
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {/* Load More Button */}
+            {hasMoreProjects && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex justify-center mt-12"
+                >
+                    <button
+                        onClick={loadMoreProjects}
+                        className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2"
+                    >
+                        Load More
+                        <span className="text-sm text-gray-300">
+                            ({filteredProjects.length - visibleProjects} remaining)
+                        </span>
+                    </button>
+                </motion.div>
+            )}
+
+            {/* End of Results */}
+            {filteredProjects.length > 0 && !hasMoreProjects && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center mt-12 pt-8 border-t border-gray-200"
+                >
+                    <p className="text-gray-500">
+                        You've viewed all {filteredProjects.length} projects
+                    </p>
+                </motion.div>
+            )}
+        </div>
+    )
+}
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            whileHover={{ y: -5 }}
+            className="group bg-white rounded-xl overflow-hidden h-full flex flex-col shadow-md hover:shadow-lg transition-shadow"
+        >
+            {/* Image with overlay */}
+            <div className="relative aspect-video bg-gray-900">
+                <Image
+                    src={project.image || "/placeholder-dark.svg"}
+                    alt={project.title}
+                    fill
+                    className="object-cover opacity-90 group-hover:opacity-80 transition-opacity"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+                <div className="absolute top-4 right-4">
+                    <Badge className="bg-black/80 text-[#faf4e6] border-none">
+                        {project.category}
+                    </Badge>
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 flex-grow flex flex-col">
+                <div className="flex-grow">
+                    <h3 className="text-xl font-bold mb-3 text-black group-hover:text-gray-800 transition-colors">
+                        {project.title}
+                    </h3>
+                    <p className="text-black/80 mb-4 line-clamp-3">
+                        {project.description}
+                    </p>
+                </div>
+
+                {/* Technologies */}
+                <div className="mb-5">
+                    <div className="flex flex-wrap gap-2">
+                        {project.technologies.slice(0, 4).map((tech) => (
+                            <span
+                                key={tech}
+                                className="text-xs bg-black/5 text-black/80 px-3 py-1 rounded-full hover:bg-black/10 transition-colors"
+                            >
+                                {tech}
+                            </span>
+                        ))}
+                        {project.technologies.length > 4 && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <span className="text-xs bg-black/5 text-black/60 px-3 py-1 rounded-full">
+                                            +{project.technologies.length - 4}
+                                        </span>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-white shadow-lg border border-black/10">
+                                        <div className="flex flex-wrap gap-2 max-w-[200px]">
+                                            {project.technologies.slice(4).map(tech => (
+                                                <span key={tech} className="text-xs bg-black/5 text-black/80 px-2 py-1 rounded-full">
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
+                    </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-3 mt-auto pt-4 border-t border-black/10">
+                    {project.githubUrl ? (
+                        project.showGithub === false ? (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            disabled
+                                            className="flex-1 rounded-lg bg-black/5 text-black/50 px-4 py-2 text-sm flex items-center justify-center gap-2"
+                                        >
+                                            <Lock className="h-4 w-4" />
+                                            Private
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-white border border-black/10">
+                                        <p>Repository is private</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        ) : (
+                            <Link
+                                href={project.githubUrl}
+                                target="_blank"
+                                className="flex-1"
+                            >
+                                <button className="w-full rounded-lg bg-black text-[#faf4e6] px-4 py-2 text-sm flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors">
+                                    <Github className="h-4 w-4" />
+                                    Code
+                                </button>
+                            </Link>
+                        )
+                    ) : null}
+
+                    {project.liveUrl && (
+                        <Link
+                            href={project.liveUrl}
+                            target="_blank"
+                            className="flex-1"
+                        >
+                            <button className="w-full rounded-lg border border-black/20 px-4 py-2 text-sm flex items-center justify-center gap-2 hover:border-black/40 hover:bg-black/5 transition-colors">
+                                <ExternalLink className="h-4 w-4" />
+                                Demo
+                            </button>
+                        </Link>
+                    )}
+                </div>
+            </div>
+        </motion.div>
+    )
 }

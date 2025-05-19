@@ -6,7 +6,6 @@ import { useState } from "react";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { allBlogPosts } from "@/data/blogs";
-import { ChibiBackground } from "@/components/ui/chibi-background";
 
 export default function BlogPage() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,14 +23,12 @@ export default function BlogPage() {
     };
 
     return (
-        <main className="relative  min-h-screen bg-gradient-to-b">
-            <ChibiBackground />
-
+        <main className="mx-auto container max-w-7xl px-4 md:px-8 lg:px-12 py-12 md:py-20">
             {/* Header */}
             <header className="relative overflow-hidden py-8 sm:py-14">
                 <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <SectionHeading
-                        title="Góc của An"
+                        title="Góc nhỏ của An"
                         subtitle="Khám phá những bài viết mới nhất về thiết kế và sáng tạo của mình ><"
                         centered
                     />

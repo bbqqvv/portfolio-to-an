@@ -6,7 +6,9 @@ import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import { ChibiBackground } from "@/components/ui/chibi-background";
 import SocialSidebar from "@/components/SocialSidebar";
+import { ChibiProvider } from "@/components/ui/chibi-context";
 
 // Import Eczar font
 const eczar = Eczar({
@@ -77,7 +79,11 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
           <Navbar />
           <CustomCursor />
-          {children}
+          <div className="relative">
+            <ChibiProvider>
+              {children}
+            </ChibiProvider>
+          </div>
           <SocialSidebar />
           <Footer />
         </ThemeProvider>
