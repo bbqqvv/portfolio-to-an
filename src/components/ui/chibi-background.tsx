@@ -7,11 +7,13 @@ interface ChibiBackgroundProps {
     className?: string;
 }
 
-export function ChibiBackground({
-}: ChibiBackgroundProps): JSX.Element {
+export function ChibiBackground({ }: ChibiBackgroundProps): JSX.Element | null {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number | null>(null);
     const { theme } = useTheme();
+
+    // ❗Đợi theme được xác định
+    if (!theme) return null;
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -82,7 +84,7 @@ export function ChibiBackground({
             y: number,
             size: number,
             rotation: number,
-            color: { r: number; g: number; b: number },
+            color: { r: number; g: number; b: number }
         ): void => {
             ctx.save();
             ctx.translate(x, y);
@@ -120,16 +122,10 @@ export function ChibiBackground({
                 bubble.x += bubble.vx;
                 bubble.y += bubble.vy;
 
-                if (
-                    bubble.x < -bubble.radius ||
-                    bubble.x > width + bubble.radius
-                ) {
+                if (bubble.x < -bubble.radius || bubble.x > width + bubble.radius) {
                     bubble.vx = -bubble.vx;
                 }
-                if (
-                    bubble.y < -bubble.radius ||
-                    bubble.y > height + bubble.radius
-                ) {
+                if (bubble.y < -bubble.radius || bubble.y > height + bubble.radius) {
                     bubble.vy = -bubble.vy;
                 }
 
@@ -167,7 +163,10 @@ export function ChibiBackground({
 
     return (
         <div className="fixed inset-0 -z-10">
-            <canvas ref={canvasRef} className="w-full h-full"></canvas>
+            <canvas
+                ref={canvasRef}
+                className="w-full h-full will-change-transform"
+            />
         </div>
     );
 }

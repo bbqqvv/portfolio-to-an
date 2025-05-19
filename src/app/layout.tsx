@@ -74,7 +74,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased "bg-[rgb(255,250,245)] dark:bg-[rgb(20,20,30)]`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
           <Navbar />
