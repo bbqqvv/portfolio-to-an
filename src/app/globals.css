@@ -9,8 +9,6 @@
   --text: #fefae0;
   --foreground: #2b1f17;
 
-
-
   --btn-text: #000;
   --btn-border: #4d5566;
   --btn-hover-bg: #000;
@@ -50,7 +48,6 @@
 
 
   body {
-    background-color: var(--background-1);
     color: var(--foreground);
     font-family: var(--font-sans), sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
