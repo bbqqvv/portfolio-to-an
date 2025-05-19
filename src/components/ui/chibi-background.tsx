@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { JSX, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
@@ -7,12 +7,11 @@ interface ChibiBackgroundProps {
     className?: string;
 }
 
-export function ChibiBackground({ }: ChibiBackgroundProps): JSX.Element | null {
+export function ChibiBackground({ className }: ChibiBackgroundProps): JSX.Element | null {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number | null>(null);
     const { theme } = useTheme();
 
-    // ❗Đợi theme được xác định
     if (!theme) return null;
 
     useEffect(() => {
@@ -55,6 +54,8 @@ export function ChibiBackground({ }: ChibiBackgroundProps): JSX.Element | null {
         const colors = theme === "dark" ? darkColors : lightColors;
         const backgroundColor =
             theme === "dark" ? "rgb(20, 20, 30)" : "rgb(255, 250, 245)";
+
+        // ... phần còn lại giữ nguyên (bubbles, stars, drawStar, animate)...
 
         const numBubbles = 15;
         const bubbles = Array.from({ length: numBubbles }, () => ({
@@ -162,7 +163,7 @@ export function ChibiBackground({ }: ChibiBackgroundProps): JSX.Element | null {
     }, [theme]);
 
     return (
-        <div className="fixed inset-0 -z-10">
+        <div className={`fixed inset-0 -z-10 ${className || ""}`}>
             <canvas
                 ref={canvasRef}
                 className="w-full h-full will-change-transform"
