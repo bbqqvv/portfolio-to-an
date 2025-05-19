@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { Twitter, Linkedin, Dribbble, Instagram } from 'lucide-react'
+import { Linkedin, Dribbble, Instagram } from 'lucide-react'
 import Link from 'next/link'
 import gsap from 'gsap'
 
@@ -89,7 +89,7 @@ export default function Footer() {
                             Liên hệ với tôi
                         </button>
                     </Link>
-                    
+
                 </div>
 
                 {/* Right: Social Icons */}

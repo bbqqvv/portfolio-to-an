@@ -14,13 +14,12 @@ export default function CustomCursor() {
         }
         window.addEventListener("mousemove", handleMouseMove)
 
-        // Kiểm tra dark mode theo class trên html
         const checkDarkMode = () => {
             setIsDark(document.documentElement.classList.contains("dark"))
         }
 
         checkDarkMode()
-        // Lắng nghe sự thay đổi class nếu bạn dùng JS toggle dark mode
+
         const observer = new MutationObserver(checkDarkMode)
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 
@@ -37,11 +36,11 @@ export default function CustomCursor() {
             height: 40,
             width: 40,
             backgroundColor: "transparent",
-            border: isDark ? "3px solid #22d3ee" : "3px solid #007bff", // Cyan for dark, Blue for light
+            border: isDark ? "3px solid #22d3ee" : "3px solid #007bff",
             borderRadius: "50%",
             boxShadow: isDark
-                ? "0 0 12px rgba(34, 211, 238, 0.7)"  // lighter cyan glow
-                : "0 0 12px rgba(0, 123, 255, 0.5)",  // blue glow
+                ? "0 0 12px rgba(34, 211, 238, 0.7)"
+                : "0 0 12px rgba(0, 123, 255, 0.5)",
         },
         text: {
             x: mousePosition.x - 75,
@@ -49,12 +48,12 @@ export default function CustomCursor() {
             height: 150,
             width: 150,
             backgroundColor: "transparent",
-            border: isDark ? "4px solid #f87171" : "4px solid #ff5733",  // Light red for dark, orange for light
+            border: isDark ? "4px solid #f87171" : "4px solid #ff5733",
             mixBlendMode: "difference" as const,
             borderRadius: "50%",
             boxShadow: isDark
-                ? "0 0 20px rgba(248, 113, 113, 0.9)"  // bright red glow
-                : "0 0 20px rgba(255, 87, 51, 0.7)",   // orange glow
+                ? "0 0 20px rgba(248, 113, 113, 0.9)"
+                : "0 0 20px rgba(255, 87, 51, 0.7)",
         },
     }
 
@@ -63,9 +62,7 @@ export default function CustomCursor() {
         window.leaveTextCursor = () => setCursorVariant("default")
 
         return () => {
-            // @ts-ignore
             delete window.enterTextCursor
-            // @ts-ignore
             delete window.leaveTextCursor
         }
     }, [])
@@ -80,10 +77,9 @@ export default function CustomCursor() {
     )
 }
 
-// Add these to the global Window interface
 declare global {
     interface Window {
-        enterTextCursor: () => void
-        leaveTextCursor: () => void
+        enterTextCursor?: () => void
+        leaveTextCursor?: () => void
     }
 }

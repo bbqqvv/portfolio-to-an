@@ -42,11 +42,10 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
 
                     <div className="max-w-3xl mx-auto">
                         <ReactMarkdown
-                            children={contentMarkdown}
                             remarkPlugins={[remarkGfm]}
                             rehypePlugins={[rehypeRaw, rehypeSlug, rehypeAutolinkHeadings]}
                             components={{
-                                img: ({ node, ...props }) => (
+                                img: ({ ...props }) => (
                                     <div className="my-6 rounded-lg overflow-hidden shadow-md">
                                         <Image
                                             src={typeof props.src === "string" ? props.src : ""}
@@ -59,7 +58,8 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                                         {props.alt && <p className="text-center text-sm mt-2">{props.alt}</p>}
                                     </div>
                                 ),
-                                a: ({ node, ...props }) => (
+
+                                a: ({ ...props }) => (
                                     <a
                                         {...props}
                                         className="text-blue-600 hover:text-blue-800 underline underline-offset-4 transition-colors"
@@ -67,14 +67,13 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                                         rel="noopener noreferrer"
                                     />
                                 ),
+
                                 code: ({
-                                    node,
                                     inline,
                                     className,
                                     children,
                                     ...props
                                 }: {
-                                    node?: any // thành optional
                                     inline?: boolean
                                     className?: string
                                     children?: React.ReactNode
@@ -108,16 +107,19 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                                     )
                                 },
 
-                                blockquote: ({ node, ...props }) => (
+                                blockquote: ({ ...props }) => (
                                     <blockquote className="border-l-4 border-gray-300 pl-4 italic my-6" {...props} />
                                 ),
-                                table: ({ node, ...props }) => (
+
+                                table: ({ ...props }) => (
                                     <div className="overflow-x-auto my-6">
                                         <table className="min-w-full divide-y divide-gray-200" {...props} />
                                     </div>
                                 ),
                             }}
-                        />
+                        >
+                            {contentMarkdown}
+                        </ReactMarkdown>
                     </div>
 
                     <ArticleFooter title={metadata.title} url={url} />

@@ -37,7 +37,6 @@ export default function PageTransition({ children }: PageTransitionProps) {
     const [isAnimating, setIsAnimating] = useState(false)
     const [pendingRoute, setPendingRoute] = useState<string | null>(null)
 
-    // Fade in khi mount hoặc khi route thay đổi xong
     useEffect(() => {
         if (containerRef.current) {
             gsap.fromTo(
@@ -76,10 +75,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         [router, isAnimating]
     )
 
-    // Nếu user thay đổi route mà ko dùng navigateWithAnimation (vd Back/Forward)
-    // => chạy animation fade out tương tự
     useEffect(() => {
-        // Chỉ chạy khi có pendingRoute khác pathname (có chuyển trang đang chờ)
         if (pendingRoute === pathname) {
             setPendingRoute(null)
             setIsAnimating(false)
