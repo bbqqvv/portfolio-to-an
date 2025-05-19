@@ -7,13 +7,33 @@ import { works } from '@/data/works';
 import Link from 'next/link';
 
 const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0 },
+    hidden: {
+        opacity: 0,
+        y: 40,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)',
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)',
+    },
 };
 
 const fadeSide = (direction: 'left' | 'right') => ({
-    hidden: { opacity: 0, x: direction === 'left' ? -60 : 60 },
-    visible: { opacity: 1, x: 0 },
+    hidden: {
+        opacity: 0,
+        x: direction === 'left' ? -60 : 60,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)',
+    },
+    visible: {
+        opacity: 1,
+        x: 0,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)',
+    },
 });
 
 const RecentWork = () => {
@@ -40,12 +60,14 @@ const RecentWork = () => {
                     initial={{ y: 0, opacity: 0.7 }}
                     animate={{ y: '10%', opacity: 0.5 }}
                     transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                    style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
                 />
                 <motion.div
                     className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
                     initial={{ y: 0, opacity: 0.7 }}
                     animate={{ y: '-10%', opacity: 0.5 }}
                     transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                    style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
                 />
             </div>
 
@@ -121,6 +143,7 @@ const RecentWork = () => {
                                             className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-lg md:rounded-xl"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                                             priority={index === 0}
+                                            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
                                         />
                                     </div>
                                 </div>
