@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { works } from '@/data/works';
-import AnimatedLink from './AnimatedLink';
+import Link from 'next/link';
 
 const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -99,13 +99,13 @@ const RecentWork = () => {
                                             {work.description}
                                         </p>
                                         <div className="mt-auto">
-                                            <AnimatedLink
+                                            <Link
                                                 href={`/blog/${work.slug}`}
                                                 className="text-sm md:text-base font-medium transition-transform duration-300 ease-out group-hover:translate-x-1 inline-block"
                                                 style={{ color: 'var(--accent)' }}
                                             >
                                                 Xem chi tiết →
-                                            </AnimatedLink>
+                                            </Link>
                                         </div>
                                     </div>
 
