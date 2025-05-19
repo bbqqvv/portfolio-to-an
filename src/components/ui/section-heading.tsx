@@ -22,15 +22,15 @@ export function SectionHeading({ title, subtitle, centered = false, className = 
         >
             <h2
                 ref={headingRef}
-                className="section-heading text-3xl md:text-4xl font-bold text-gray-800 mb-4 font-heading"
-                style={{ fontFamily: "var(--font-eczar)", color: 'var(--foreground)' }}
+                className="section-heading text-3xl md:text-4xl font-bold mb-4 font-heading"
+                style={{ fontFamily: "var(--font-eczar)" }}
 
 
             >
                 {title}
             </h2>
             {subtitle && (
-                <p ref={subtitleRef} className="section-heading text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--foreground)' }}>
+                <p ref={subtitleRef} className="section-headingmax-w-2xl mx-auto" >
                     {subtitle}
                 </p>
             )}

@@ -1,17 +1,28 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import gsap from "gsap"
 
 export default function CustomCursor() {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-    const [cursorVariant, setCursorVariant] = useState("default")
+    const cursorRef = useRef<HTMLDivElement>(null)
     const [isDark, setIsDark] = useState(false)
+    const [variant, setVariant] = useState<"default" | "text">("default")
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY })
+            if (!cursorRef.current) return
+
+            const { clientX: x, clientY: y } = e
+            const offset = variant === "text" ? 75 : 20
+
+            gsap.to(cursorRef.current, {
+                x: x - offset,
+                y: y - offset,
+                duration: 0.15,
+                ease: "power2.out",
+            })
         }
+
         window.addEventListener("mousemove", handleMouseMove)
 
         const checkDarkMode = () => {
@@ -27,39 +38,43 @@ export default function CustomCursor() {
             window.removeEventListener("mousemove", handleMouseMove)
             observer.disconnect()
         }
-    }, [])
-
-    const variants = {
-        default: {
-            x: mousePosition.x - 20,
-            y: mousePosition.y - 20,
-            height: 40,
-            width: 40,
-            backgroundColor: "transparent",
-            border: isDark ? "3px solid #22d3ee" : "3px solid #007bff",
-            borderRadius: "50%",
-            boxShadow: isDark
-                ? "0 0 12px rgba(34, 211, 238, 0.7)"
-                : "0 0 12px rgba(0, 123, 255, 0.5)",
-        },
-        text: {
-            x: mousePosition.x - 75,
-            y: mousePosition.y - 75,
-            height: 150,
-            width: 150,
-            backgroundColor: "transparent",
-            border: isDark ? "4px solid #f87171" : "4px solid #ff5733",
-            mixBlendMode: "difference" as const,
-            borderRadius: "50%",
-            boxShadow: isDark
-                ? "0 0 20px rgba(248, 113, 113, 0.9)"
-                : "0 0 20px rgba(255, 87, 51, 0.7)",
-        },
-    }
+    }, [variant])
 
     useEffect(() => {
-        window.enterTextCursor = () => setCursorVariant("text")
-        window.leaveTextCursor = () => setCursorVariant("default")
+        if (!cursorRef.current) return
+
+        const el = cursorRef.current
+
+        if (variant === "default") {
+            gsap.to(el, {
+                width: 40,
+                height: 40,
+                border: `3px solid ${isDark ? "#22d3ee" : "#007bff"}`,
+                boxShadow: isDark
+                    ? "0 0 12px rgba(34, 211, 238, 0.7)"
+                    : "0 0 12px rgba(0, 123, 255, 0.5)",
+                mixBlendMode: "initial",
+                duration: 0.2,
+                ease: "power2.out",
+            })
+        } else if (variant === "text") {
+            gsap.to(el, {
+                width: 150,
+                height: 150,
+                border: `4px solid ${isDark ? "#f87171" : "#ff5733"}`,
+                boxShadow: isDark
+                    ? "0 0 20px rgba(248, 113, 113, 0.9)"
+                    : "0 0 20px rgba(255, 87, 51, 0.7)",
+                mixBlendMode: "difference",
+                duration: 0.2,
+                ease: "power2.out",
+            })
+        }
+    }, [variant, isDark])
+
+    useEffect(() => {
+        window.enterTextCursor = () => setVariant("text")
+        window.leaveTextCursor = () => setVariant("default")
 
         return () => {
             delete window.enterTextCursor
@@ -68,11 +83,22 @@ export default function CustomCursor() {
     }, [])
 
     return (
-        <motion.div
-            className="custom-cursor hidden md:block fixed top-0 left-0 pointer-events-none z-50"
-            variants={variants}
-            animate={cursorVariant}
-            transition={{ type: "spring", stiffness: 500, damping: 28 }}
+        <div
+            ref={cursorRef}
+            className="custom-cursor hidden md:block fixed top-0 left-0 pointer-events-none z-50 rounded-full"
+            style={{
+                position: "fixed",
+                width: 40,
+                height: 40,
+                border: `3px solid ${isDark ? "#22d3ee" : "#007bff"}`,
+                boxShadow: isDark
+                    ? "0 0 12px rgba(34, 211, 238, 0.7)"
+                    : "0 0 12px rgba(0, 123, 255, 0.5)",
+                borderRadius: "50%",
+                pointerEvents: "none",
+                zIndex: 9999,
+                mixBlendMode: "initial",
+            }}
         />
     )
 }

@@ -20,8 +20,7 @@ type RevealOptions = {
 };
 
 export function useGSAPReveal(
-    selector: string,
-    options: Partial<RevealOptions> = {},
+selector: string, options: Partial<RevealOptions> = {}, p0: (string | undefined)[],
 ) {
     const revealRef = useRef<gsap.core.Tween | null>(null);
 

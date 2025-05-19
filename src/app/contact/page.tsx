@@ -81,20 +81,26 @@ export default function ContactPage() {
                     centered
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
                     {contactInfo.map((info, index) => (
                         <AnimatedCard
                             key={index}
-                            className="p-6 rounded-xl bg-white shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center border border-rose-100 hover:border-rose-200"
+                            className="p-6 rounded-2xl bg-white shadow-lg hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 ease-in-out border border-transparent hover:border-rose-300 flex flex-col items-center text-center"
                             delay={index}
                         >
-                            <div className="bg-rose-100 p-3 rounded-full mb-4 text-rose-600">{info.icon}</div>
-                            <h3 className="text-lg font-medium mb-2 text-rose-900">{info.title}</h3>
-                            <p className="mb-3 text-rose-800">{info.content}</p>
+                            <div className="bg-rose-100 p-4 rounded-full mb-4 text-rose-600 text-xl shadow-inner">
+                                {info.icon}
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2 text-rose-900">
+                                {info.title}
+                            </h3>
+                            <p className="mb-4 text-rose-800 text-sm leading-relaxed">
+                                {info.content}
+                            </p>
                             {info.link ? (
                                 <a
                                     href={info.link}
-                                    className="text-sm font-medium hover:underline hover:text-rose-600 transition-colors text-rose-700"
+                                    className="text-sm font-medium text-rose-700 hover:text-rose-600 hover:underline transition-colors duration-200"
                                 >
                                     {info.linkText}
                                 </a>
@@ -107,32 +113,40 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     <div className="space-y-6">
-                        <h2 className="text-3xl font-medium text-rose-900">Thông tin liên hệ trực tiếp</h2>
-                        <p className="text-rose-800">
+                        <h2 className="text-3xl font-medium ">
+                            Thông tin liên hệ trực tiếp
+                        </h2>
+                        <p className="">
                             Hiện tôi đang nhận các dự án freelance và cơ hội hợp tác. Dù bạn có ý tưởng dự án
                             hay chỉ đơn giản muốn chào hỏi, tôi rất mong được nghe từ bạn.
                         </p>
 
                         <div className="space-y-4">
                             <div className="flex items-start space-x-4">
-                                <div className="bg-rose-100 p-2 rounded-full mt-1">
-                                    <Mail className="w-4 h-4 text-rose-600" />
+                                <div className="p-2 rounded-full mt-1">
+                                    <Mail className="w-4 h-4 " />
                                 </div>
                                 <div>
-                                    <h4 className="font-medium text-rose-900">Email</h4>
-                                    <a href="mailto:hello@shambhavi.design" className="hover:underline text-rose-700">
+                                    <h4 className="font-medium ">Email</h4>
+                                    <a
+                                        href="mailto:hello@shambhavi.design"
+                                        className="hover:underline hover:text-rose-600"
+                                    >
                                         hello@shambhavi.design
                                     </a>
                                 </div>
                             </div>
 
                             <div className="flex items-start space-x-4">
-                                <div className="bg-rose-100 p-2 rounded-full mt-1">
-                                    <Phone className="w-4 h-4 text-rose-600" />
+                                <div className="p-2 rounded-full mt-1">
+                                    <Phone className="w-4 h-4" />
                                 </div>
                                 <div>
-                                    <h4 className="font-medium text-rose-900">Điện thoại</h4>
-                                    <a href="tel:+84123456789" className="hover:underline text-rose-700">
+                                    <h4 className="font-medium">Điện thoại</h4>
+                                    <a
+                                        href="tel:+84123456789"
+                                        className="hover:underline hover:text-rose-600"
+                                    >
                                         +84 123 456 789
                                     </a>
                                 </div>
@@ -140,11 +154,13 @@ export default function ContactPage() {
                         </div>
                     </div>
 
-                    <AnimatedCard className="p-8 rounded-xl bg-white border border-rose-100">
-                        <h2 className="text-2xl font-medium mb-6 text-rose-900">Gửi tin nhắn</h2>
+                    <AnimatedCard className="p-8 rounded-xl  border-2 border-rose-100">
+                        <h2 className="text-2xl font-medium mb-6">
+                            Gửi tin nhắn
+                        </h2>
 
                         {isSubmitted && (
-                            <div className="bg-rose-50 border border-rose-200 p-4 rounded-lg mb-6 text-sm text-rose-800">
+                            <div className="bg-rose-50 border border-rose-200 p-4 rounded-lg mb-6 text-sm">
                                 Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi lại trong vòng 24 giờ.
                             </div>
                         )}
@@ -152,7 +168,7 @@ export default function ContactPage() {
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label htmlFor="name" className="block text-sm font-medium mb-1 text-rose-800">
+                                    <label htmlFor="name" className="block text-sm font-medium mb-1">
                                         Họ và tên
                                     </label>
                                     <input
@@ -168,7 +184,7 @@ export default function ContactPage() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-medium mb-1 text-rose-800">
+                                    <label htmlFor="email" className="block text-sm font-medium mb-1 ">
                                         Email
                                     </label>
                                     <input
@@ -185,7 +201,7 @@ export default function ContactPage() {
                             </div>
 
                             <div>
-                                <label htmlFor="subject" className="block text-sm font-medium mb-1 text-rose-800">
+                                <label htmlFor="subject" className="block text-sm font-medium mb-1">
                                     Chủ đề
                                 </label>
                                 <select
@@ -206,7 +222,7 @@ export default function ContactPage() {
                             </div>
 
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium mb-1 text-rose-800">
+                                <label htmlFor="message" className="block text-sm font-medium mb-1">
                                     Nội dung
                                 </label>
                                 <textarea
@@ -223,7 +239,8 @@ export default function ContactPage() {
 
                             <button
                                 type="submit"
-                                className={`w-full px-6 py-3 rounded-xl transition-all font-medium text-sm bg-gradient-to-r from-rose-400 to-rose-500 text-white hover:from-rose-500 hover:to-rose-600 shadow-sm hover:shadow-md ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
+                                className={`w-full px-6 py-3 rounded-xl transition-all font-medium text-sm bg-gradient-to-r from-rose-400 to-red-500 text-white hover:from-rose-500 hover:to-rose-600 shadow-sm hover:shadow-md ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                                    }`}
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? (
