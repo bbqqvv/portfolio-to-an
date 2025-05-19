@@ -1,4 +1,3 @@
-
 import { Eczar, Work_Sans } from "next/font/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -10,7 +9,6 @@ import Navbar from "@/components/Navbar";
 import { ChibiBackground } from "@/components/ui/chibi-background";
 import PageTransition from "@/components/ui/page-transition";
 import SocialSidebar from "@/components/SocialSidebar";
-import { ChibiProvider } from "@/components/ui/chibi-context";
 
 // Import Eczar font
 const eczar = Eczar({
@@ -34,64 +32,61 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata: Metadata = {
-//   title: "Portfolio Tố An",
-//   description: "Khám phá portfolio cá nhân của Tố An – sinh viên lớp 22SE2, Trường Đại học CNTT & Truyền thông Việt – Hàn.",
-//   openGraph: {
-//     title: "Portfolio Tố An",
-//     description: "Tác phẩm thiết kế, dự án web, và ý tưởng sáng tạo từ Tố An – sinh viên lớp 22SE2, Đại học CNTT & Truyền thông Việt – Hàn.",
-//     url: "https://portfolio-to-an.vercel.app",
-//     siteName: "Portfolio Tố An",
-//     images: [
-//       {
-//         url: "https://portfolio-to-an.vercel.app/thumbnail.png",
-//         width: 1200,
-//         height: 630,
-//         alt: "Ảnh đại diện Portfolio Tố An",
-//       },
-//     ],
-//     locale: "vi_VN",
-//     type: "website",
-//   },
-//   twitter: {
-//     card: "summary_large_image",
-//     title: "Portfolio Tố An",
-//     description: "Tác phẩm thiết kế và dự án UI/UX nổi bật của Tố An – sinh viên UIT-VKU.",
-//     images: ["https://portfolio-to-an.vercel.app/thumbnail.png"],
-//   },
-//   icons: {
-//     icon: "/favicon.png",
-//     shortcut: "/favicon.png",
-//     apple: "/apple-touch-icon.png", // nếu có
-//   },
+export const metadata: Metadata = {
+  title: "Portfolio Tố An",
+  description: "Khám phá portfolio cá nhân của Tố An – sinh viên lớp 22SE2, Trường Đại học CNTT & Truyền thông Việt – Hàn.",
+  openGraph: {
+    title: "Portfolio Tố An",
+    description: "Tác phẩm thiết kế, dự án web, và ý tưởng sáng tạo từ Tố An – sinh viên lớp 22SE2, Đại học CNTT & Truyền thông Việt – Hàn.",
+    url: "https://portfolio-to-an.vercel.app",
+    siteName: "Portfolio Tố An",
+    images: [
+      {
+        url: "https://portfolio-to-an.vercel.app/thumbnail.png",
+        width: 1200,
+        height: 630,
+        alt: "Ảnh đại diện Portfolio Tố An",
+      },
+    ],
+    locale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio Tố An",
+    description: "Tác phẩm thiết kế và dự án UI/UX nổi bật của Tố An – sinh viên UIT-VKU.",
+    images: ["https://portfolio-to-an.vercel.app/thumbnail.png"],
+  },
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png", // nếu có
+  },
 
-// };
+};
 
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="vi" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased `}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`}
+      >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
-          <ChibiProvider>
-
-            <Navbar />
-            <CustomCursor />
-            <PageTransition>
-
-              {children}
-            </PageTransition>
-
-            <SocialSidebar />
-            <Footer />
-          </ChibiProvider>
-
+          <Navbar />
+          <CustomCursor />
+          <ChibiBackground />
+          <PageTransition>
+            {children}
+          </PageTransition>
+          <SocialSidebar />
+          <Footer />
         </ThemeProvider>
       </body>
-    </html>
+    </html >
   );
 }
