@@ -3,59 +3,42 @@
 import { useRef } from 'react'
 import { Linkedin, Dribbble, Instagram } from 'lucide-react'
 import Link from 'next/link'
-import gsap from 'gsap'
+import { motion } from 'framer-motion'
 
 export default function Footer() {
-    const btnRef = useRef<HTMLButtonElement>(null)
-    const iconRefs = useRef<(HTMLAnchorElement | null)[]>([])
-
-    // Button hover handlers
-    const handleBtnMouseEnter = () => {
-        if (!btnRef.current) return
-        gsap.to(btnRef.current, {
+    const btnVariants = {
+        initial: {
+            backgroundColor: 'transparent',
+            color: 'var(--btn-text)',
+            scale: 1,
+        },
+        hover: {
             backgroundColor: 'var(--btn-hover-bg)',
             color: 'var(--btn-hover-text)',
             scale: 1.05,
-            duration: 0.3,
-            ease: 'power3.out',
-        })
+            transition: { duration: 0.3, ease: 'easeOut' },
+        },
     }
 
-    const handleBtnMouseLeave = () => {
-        if (!btnRef.current) return
-        gsap.to(btnRef.current, {
+    const iconVariants = {
+        initial: {
             backgroundColor: 'transparent',
             color: 'var(--btn-text)',
             scale: 1,
-            duration: 0.3,
-            ease: 'power3.out',
-        })
-    }
-
-    // Social icon hover handlers
-    const handleIconMouseEnter = (index: number) => {
-        const icon = iconRefs.current[index]
-        if (!icon) return
-        gsap.to(icon, {
+        },
+        hover: {
             backgroundColor: 'var(--btn-hover-bg)',
             color: 'var(--btn-hover-text)',
             scale: 1.1,
-            duration: 0.3,
-            ease: 'power3.out',
-        })
+            transition: { duration: 0.3, ease: 'easeOut' },
+        },
     }
 
-    const handleIconMouseLeave = (index: number) => {
-        const icon = iconRefs.current[index]
-        if (!icon) return
-        gsap.to(icon, {
-            backgroundColor: 'transparent',
-            color: 'var(--btn-text)',
-            scale: 1,
-            duration: 0.3,
-            ease: 'power3.out',
-        })
-    }
+    const socialLinks = [
+        { Icon: Dribbble, href: '' },
+        { Icon: Instagram, href: '' },
+        { Icon: Linkedin, href: '' },
+    ]
 
     return (
         <footer
@@ -73,47 +56,42 @@ export default function Footer() {
                         Hãy cùng nhau làm việc và biến mọi thứ trở nên thật đáng yêu và hữu ích.
                     </h2>
                     <Link href="/contact" legacyBehavior>
-                        <button
-                            ref={btnRef}
+                        <motion.button
+                            type="button"
                             className="px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 border-2 rounded-lg md:rounded-xl text-sm sm:text-base transition"
                             style={{
-                                color: 'var(--btn-text)',
                                 borderColor: 'var(--btn-border)',
-                                backgroundColor: 'transparent',
                                 cursor: 'pointer',
                                 transformOrigin: 'center',
                             }}
-                            onMouseEnter={handleBtnMouseEnter}
-                            onMouseLeave={handleBtnMouseLeave}
+                            initial="initial"
+                            whileHover="hover"
+                            animate="initial"
+                            variants={btnVariants}
                         >
                             Liên hệ với tôi
-                        </button>
+                        </motion.button>
                     </Link>
-
                 </div>
 
                 {/* Right: Social Icons */}
                 <div className="flex space-x-5 justify-center mt-auto">
-                    {[Dribbble, Instagram, Linkedin].map((Icon, index) => (
-                        <Link
-                            href={''}
+                    {socialLinks.map(({ Icon, href }, index) => (
+                        <motion.a
                             key={index}
+                            href={href}
                             aria-label="Social link"
-                            ref={(el) => { iconRefs.current[index] = el; }}
-                            className="p-2 rounded-full border transition-all"
-                            style={{
-                                borderColor: 'var(--btn-border)',
-                                color: 'var(--btn-text)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                transformOrigin: 'center',
-                            }}
-                            onMouseEnter={() => handleIconMouseEnter(index)}
-                            onMouseLeave={() => handleIconMouseLeave(index)}
+                            className="p-2 rounded-full border flex items-center justify-center transition-all"
+                            style={{ borderColor: 'var(--btn-border)', transformOrigin: 'center' }}
+                            initial="initial"
+                            whileHover="hover"
+                            animate="initial"
+                            variants={iconVariants}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             <Icon className="w-5 h-5" style={{ color: 'inherit' }} />
-                        </Link>
+                        </motion.a>
                     ))}
                 </div>
             </div>

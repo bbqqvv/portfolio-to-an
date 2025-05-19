@@ -3,13 +3,11 @@
 import React, {
     createContext,
     useContext,
-    useEffect,
-    useRef,
     useState,
     useCallback,
 } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import gsap from 'gsap'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface PageTransitionContextType {
     navigateWithAnimation: (url: string) => void
@@ -33,66 +31,52 @@ interface PageTransitionProps {
 export default function PageTransition({ children }: PageTransitionProps) {
     const router = useRouter()
     const pathname = usePathname()
-    const containerRef = useRef<HTMLDivElement>(null)
+
     const [isAnimating, setIsAnimating] = useState(false)
     const [pendingRoute, setPendingRoute] = useState<string | null>(null)
 
-    useEffect(() => {
-        if (containerRef.current) {
-            gsap.fromTo(
-                containerRef.current,
-                { opacity: 0, y: 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    ease: 'power2.out',
-                    onComplete() {
-                        setIsAnimating(false) // kết thúc animation, cho render tiếp
-                    },
-                }
-            )
-        }
-    }, [pathname])
-
-    // Hàm chuyển trang có animation fade out
     const navigateWithAnimation = useCallback(
         (url: string) => {
-            if (isAnimating || !containerRef.current) return // chặn gọi nhiều lần
+            if (isAnimating) return
             setIsAnimating(true)
             setPendingRoute(url)
-
-            gsap.to(containerRef.current, {
-                opacity: 0,
-                y: -20,
-                duration: 0.6,
-                ease: 'power2.in',
-                onComplete() {
-                    router.push(url)
-                },
-            })
         },
-        [router, isAnimating]
+        [isAnimating]
     )
 
-    useEffect(() => {
-        if (pendingRoute === pathname) {
-            setPendingRoute(null)
-            setIsAnimating(false)
-        }
-    }, [pathname, pendingRoute])
+    // Animation variants
+    const variants = {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+        exit: { opacity: 0, y: -20, transition: { duration: 0.6, ease: 'easeIn' } },
+    }
 
     return (
         <PageTransitionContext.Provider value={{ navigateWithAnimation }}>
-            <div
-                ref={containerRef}
-                style={{
-                    minHeight: '100vh',
-                    pointerEvents: isAnimating ? 'none' : 'auto',
+            <AnimatePresence
+                mode="wait"
+                onExitComplete={() => {
+                    if (pendingRoute) {
+                        router.push(pendingRoute)
+                        setPendingRoute(null)
+                        setIsAnimating(false)
+                    }
                 }}
             >
-                {children}
-            </div>
+                <motion.div
+                    key={pathname} // re-mount and animate on pathname change
+                    variants={variants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    style={{
+                        minHeight: '100vh',
+                        pointerEvents: isAnimating ? 'none' : 'auto',
+                    }}
+                >
+                    {children}
+                </motion.div>
+            </AnimatePresence>
         </PageTransitionContext.Provider>
     )
 }

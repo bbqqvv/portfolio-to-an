@@ -1,44 +1,43 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import Image from 'next/image'
+import Link from 'next/link'
+import { useEffect } from 'react'
+import { motion, useAnimation, useCycle } from 'framer-motion'
 
 export default function Custom404() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const imageRef = useRef<HTMLDivElement>(null);
+    const containerControls = useAnimation()
+    const imageControls = useAnimation()
 
     useEffect(() => {
-        // Fade in container
-        if (containerRef.current) {
-            gsap.fromTo(
-                containerRef.current,
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
-            );
-        }
+        // Animate container fade in + slide up
+        containerControls.start({
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: 'easeOut' },
+        })
 
-        // Floating animation for image
-        if (imageRef.current) {
-            gsap.to(imageRef.current, {
-                y: -10,
+        // Start floating animation loop for image
+        imageControls.start({
+            y: [-10, 0, -10],
+            transition: {
                 duration: 2,
-                ease: "sine.inOut",
-                repeat: -1,
-                yoyo: true,
-            });
-        }
-    }, []);
+                ease: 'easeInOut',
+                repeat: Infinity,
+                repeatType: 'loop',
+            },
+        })
+    }, [containerControls, imageControls])
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-center px-4">
-            <div
-                ref={containerRef}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={containerControls}
                 className="max-w-lg w-full space-y-6 text-center"
             >
                 {/* Illustration */}
-                <div ref={imageRef}>
+                <motion.div animate={imageControls}>
                     <Image
                         src="/images/404.png"
                         alt="404 Illustration"
@@ -47,14 +46,12 @@ export default function Custom404() {
                         className="mx-auto"
                         priority
                     />
-                </div>
+                </motion.div>
 
                 {/* Text content */}
                 <div>
                     <h1 className="text-5xl font-semibold">404</h1>
-                    <h2 className="text-2xl font-medium mt-2">
-                        Trang không tìm thấy
-                    </h2>
+                    <h2 className="text-2xl font-medium mt-2">Trang không tìm thấy</h2>
                     <p className="mt-2">
                         Xin lỗi, mình không thể tìm thấy trang bạn đang cố truy cập.
                     </p>
@@ -75,7 +72,7 @@ export default function Custom404() {
                         Hỗ trợ kỹ thuật
                     </Link>
                 </div>
-            </div>
+            </motion.div>
         </main>
-    );
+    )
 }

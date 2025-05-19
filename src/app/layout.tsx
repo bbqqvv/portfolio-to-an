@@ -80,9 +80,9 @@ export default function RootLayout({
           <Navbar />
           <CustomCursor />
           <ChibiBackground />
-          <PageTransition>
-            {children}
-          </PageTransition>
+          {/* <PageTransition> */}
+          {children}
+          {/* </PageTransition> */}
           <SocialSidebar />
           <Footer />
         </ThemeProvider>

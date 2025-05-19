@@ -1,39 +1,52 @@
-"use client"
+"use client";
 
-import { useGSAPReveal } from "@/hooks/useGSAPReveal"
-import { useRef } from "react"
+import { motion } from "framer-motion";
+import { useMotionReveal } from "@/hooks/useMotionReveal";
 
 interface SectionHeadingProps {
-    title: string
-    subtitle?: string
-    centered?: boolean
-    className?: string
+    title: string;
+    subtitle?: string;
+    centered?: boolean;
+    className?: string;
 }
 
 export function SectionHeading({ title, subtitle, centered = false, className = "" }: SectionHeadingProps) {
-    const headingRef = useRef<HTMLHeadingElement>(null)
-    const subtitleRef = useRef<HTMLParagraphElement>(null)
+    // Dùng hook cho tiêu đề
+    const { ref: headingRef, controls: headingControls, initial: headingInitial } = useMotionReveal({
+        direction: "up",
+        distance: 50,
+        duration: 0.8,
+    });
 
-    // Use custom hook for reveal animation
-    useGSAPReveal(".section-heading", { direction: "up", stagger: 0.2 }, [title, subtitle])
+    // Dùng hook cho subtitle nếu có (cách đơn giản nhất là không stagger, hoặc tạo 2 hook)
+    const { ref: subtitleRef, controls: subtitleControls, initial: subtitleInitial } = useMotionReveal({
+        direction: "up",
+        distance: 50,
+        duration: 0.8,
+        delay: 0.2,
+    });
 
     return (
-        <div className={`mb-12 ${centered ? "text-center" : ""} ${className}`}
-        >
-            <h2
+        <div className={`mb-12 ${centered ? "text-center" : ""} ${className}`}>
+            <motion.h2
                 ref={headingRef}
+                initial={headingInitial}
+                animate={headingControls}
                 className="section-heading text-3xl md:text-4xl font-bold mb-4 font-heading"
                 style={{ fontFamily: "var(--font-eczar)" }}
-
-
             >
                 {title}
-            </h2>
+            </motion.h2>
             {subtitle && (
-                <p ref={subtitleRef} className="section-headingmax-w-2xl mx-auto" >
+                <motion.p
+                    ref={subtitleRef}
+                    initial={subtitleInitial}
+                    animate={subtitleControls}
+                    className="section-heading max-w-2xl mx-auto"
+                >
                     {subtitle}
-                </p>
+                </motion.p>
             )}
         </div>
-    )
+    );
 }
