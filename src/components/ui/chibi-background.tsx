@@ -163,7 +163,10 @@ export function ChibiBackground({ className }: ChibiBackgroundProps): JSX.Elemen
     }, [theme]);
 
     return (
-        <div className={`fixed inset-0 -z-10 ${className || ""}`}>
+        <div
+            className={`absolute inset-0 pointer-events-none ${className || ""}`}
+            style={{ zIndex: -1 }}
+        >
             <canvas
                 ref={canvasRef}
                 className="w-full h-full will-change-transform"
