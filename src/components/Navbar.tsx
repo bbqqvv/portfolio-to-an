@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
-import ThemeToggle from './ThemeToggle'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
     { href: '/', label: 'Trang Chủ' },
     { href: '/about', label: 'Về tôi' },
     { href: '/projects', label: 'Dự Án' },
     { href: '/blog', label: 'Blog' },
-    { href: '/contact', label: 'Liên Hệ' }
-]
+    { href: '/contact', label: 'Liên Hệ' },
+];
 
 const desktopItemVariants = {
     hidden: { opacity: 0, y: 10 },
@@ -21,36 +21,35 @@ const desktopItemVariants = {
         y: 0,
         transition: {
             delay: i * 0.15,
-            duration: 0.6,
-            ease: 'easeOut'
-        }
-    })
-}
+            duration: 0.5,
+            ease: 'easeOut',
+        },
+    }),
+};
 
 const mobileMenuVariants = {
-    hidden: { opacity: 0, y: -10, height: 0 },
+    hidden: { opacity: 0, height: 0 },
     visible: {
         opacity: 1,
-        y: 0,
         height: 'auto',
         transition: {
             duration: 0.3,
             ease: 'easeOut',
             when: 'beforeChildren',
-            staggerChildren: 0.1
-        }
+            staggerChildren: 0.05,
+        },
     },
-    exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: 'easeInOut' } }
-}
+    exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: 'easeInOut' } },
+};
 
 const mobileItemVariants = {
     hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } }
-}
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+};
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false)
-    const toggleRef = useRef<HTMLButtonElement | null>(null)
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleRef = useRef<HTMLButtonElement | null>(null);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -59,13 +58,13 @@ export default function Navbar() {
                 !document.getElementById('mobile-menu')?.contains(e.target as Node) &&
                 !toggleRef.current?.contains(e.target as Node)
             ) {
-                setIsOpen(false)
+                setIsOpen(false);
             }
-        }
+        };
 
-        if (isOpen) document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [isOpen])
+        if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isOpen]);
 
     return (
         <nav
@@ -144,5 +143,5 @@ export default function Navbar() {
                 )}
             </AnimatePresence>
         </nav>
-    )
+    );
 }

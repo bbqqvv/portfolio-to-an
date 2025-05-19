@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { works } from '@/data/works';
@@ -16,6 +16,8 @@ const fadeSide = (direction: 'left' | 'right') => ({
     visible: { opacity: 1, x: 0 },
 });
 
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
 const RecentWork = () => {
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true });
@@ -30,23 +32,37 @@ const RecentWork = () => {
                 color: 'var(--foreground)',
             }}
         >
-            {/* Parallax-style background blur (static replacement for simplicity) */}
+            {/* Static background only for desktop */}
             <div
                 className="absolute top-0 left-0 w-full h-full pointer-events-none"
                 aria-hidden
             >
-                <motion.div
-                    className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]"
-                    initial={{ y: 0, opacity: 0.7 }}
-                    animate={{ y: '10%', opacity: 0.5 }}
-                    transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
-                />
-                <motion.div
-                    className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
-                    initial={{ y: 0, opacity: 0.7 }}
-                    animate={{ y: '-10%', opacity: 0.5 }}
-                    transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
-                />
+                {!isMobile && (
+                    <>
+                        <motion.div
+                            className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]"
+                            initial={{ y: 0, opacity: 0.7 }}
+                            animate={{ y: '10%', opacity: 0.5 }}
+                            transition={{
+                                duration: 2,
+                                ease: 'linear',
+                                repeat: Infinity,
+                                repeatType: 'mirror',
+                            }}
+                        />
+                        <motion.div
+                            className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
+                            initial={{ y: 0, opacity: 0.7 }}
+                            animate={{ y: '-10%', opacity: 0.5 }}
+                            transition={{
+                                duration: 2,
+                                ease: 'linear',
+                                repeat: Infinity,
+                                repeatType: 'mirror',
+                            }}
+                        />
+                    </>
+                )}
             </div>
 
             <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
@@ -54,7 +70,7 @@ const RecentWork = () => {
                     className="mb-14 md:mb-20 section-title text-center md:text-left"
                     style={{ fontFamily: 'Eczar, sans-serif' }}
                     variants={fadeInUp}
-                    initial="hidden"
+                    initial={!isMobile ? 'hidden' : false}
                     animate={isInView ? 'visible' : 'hidden'}
                     transition={{ duration: 0.8 }}
                 >
@@ -72,10 +88,10 @@ const RecentWork = () => {
                                 key={index}
                                 className="project-item rounded-xl md:rounded-2xl overflow-hidden group"
                                 style={{ backgroundColor: 'var(--card-bg)' }}
-                                variants={fadeSide(from)}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, amount: 0.2 }}
+                                variants={!isMobile ? fadeSide(from) : undefined}
+                                initial={!isMobile ? 'hidden' : false}
+                                whileInView={!isMobile ? 'visible' : undefined}
+                                viewport={!isMobile ? { once: true, amount: 0.2 } : undefined}
                                 transition={{ duration: 1, ease: 'easeOut' }}
                             >
                                 <div className="md:flex flex-col md:flex-row h-full p-4 sm:p-6 md:p-10">
@@ -101,7 +117,7 @@ const RecentWork = () => {
                                         <div className="mt-auto">
                                             <Link
                                                 href={`/blog/${work.slug}`}
-                                                className="text-sm md:text-base font-medium transition-transform duration-300 ease-out group-hover:translate-x-1 inline-block"
+                                                className="text-sm md:text-base font-medium transition-transform duration-300 ease-out inline-block"
                                                 style={{ color: 'var(--accent)' }}
                                             >
                                                 Xem chi tiết →
@@ -118,9 +134,9 @@ const RecentWork = () => {
                                             src={work.image}
                                             alt={work.title}
                                             fill
-                                            className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105 rounded-lg md:rounded-xl"
+                                            className={`object-cover transition-transform duration-700 ease-in-out rounded-lg md:rounded-xl ${!isMobile ? 'group-hover:scale-105' : ''}`}
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                                            priority={index === 0}
+                                            priority={index < 2}
                                         />
                                     </div>
                                 </div>
