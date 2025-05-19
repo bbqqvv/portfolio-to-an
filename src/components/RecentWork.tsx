@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { works } from '@/data/works';
@@ -16,25 +16,9 @@ const fadeSide = (direction: 'left' | 'right') => ({
     visible: { opacity: 1, x: 0 },
 });
 
-const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const check = () => setIsMobile(window.innerWidth <= 768);
-            check();
-            window.addEventListener('resize', check);
-            return () => window.removeEventListener('resize', check);
-        }
-    }, []);
-
-    return isMobile;
-};
-
 const RecentWork = () => {
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true });
-    const isMobile = useIsMobile();
 
     return (
         <section
@@ -46,26 +30,24 @@ const RecentWork = () => {
                 color: 'var(--foreground)',
             }}
         >
-            {/* Blur background only on desktop */}
-            {!isMobile && (
-                <div
-                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                    aria-hidden
-                >
-                    <motion.div
-                        className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[80px] opacity-40"
-                        initial={{ y: 0, opacity: 0.4 }}
-                        animate={{ y: '10%', opacity: 0.3 }}
-                        transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
-                    />
-                    <motion.div
-                        className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[80px] opacity-40"
-                        initial={{ y: 0, opacity: 0.4 }}
-                        animate={{ y: '-10%', opacity: 0.3 }}
-                        transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
-                    />
-                </div>
-            )}
+            {/* Parallax-style background blur (static replacement for simplicity) */}
+            <div
+                className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                aria-hidden
+            >
+                <motion.div
+                    className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]"
+                    initial={{ y: 0, opacity: 0.7 }}
+                    animate={{ y: '10%', opacity: 0.5 }}
+                    transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                />
+                <motion.div
+                    className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
+                    initial={{ y: 0, opacity: 0.7 }}
+                    animate={{ y: '-10%', opacity: 0.5 }}
+                    transition={{ duration: 2, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                />
+            </div>
 
             <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
                 <motion.div
@@ -99,8 +81,7 @@ const RecentWork = () => {
                                 <div className="md:flex flex-col md:flex-row h-full p-4 sm:p-6 md:p-10">
                                     {/* Text */}
                                     <div
-                                        className={`p-4 sm:p-6 md:p-8 lg:p-10 md:w-1/2 flex flex-col ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'
-                                            }`}
+                                        className={`p-4 sm:p-6 md:p-8 lg:p-10 md:w-1/2 flex flex-col ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}
                                     >
                                         <h3
                                             className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4"
@@ -130,8 +111,7 @@ const RecentWork = () => {
 
                                     {/* Image */}
                                     <div
-                                        className={`relative md:w-1/2 h-48 sm:h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
-                                            } rounded-lg md:rounded-xl overflow-hidden`}
+                                        className={`relative md:w-1/2 h-48 sm:h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'} rounded-lg md:rounded-xl overflow-hidden`}
                                     >
                                         <div className="absolute inset-0 bg-white bg-opacity-60 dark:bg-opacity-40 pointer-events-none rounded-lg md:rounded-xl" />
                                         <Image

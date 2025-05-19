@@ -4,58 +4,60 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const navItems = [
+    { href: '/', label: 'Trang Chủ' },
+    { href: '/about', label: 'Về tôi' },
+    { href: '/projects', label: 'Dự Án' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/contact', label: 'Liên Hệ' }
+]
+
+const desktopItemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.15,
+            duration: 0.6,
+            ease: 'easeOut'
+        }
+    })
+}
+
+const mobileMenuVariants = {
+    hidden: { opacity: 0, y: -10, height: 0 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        height: 'auto',
+        transition: {
+            duration: 0.3,
+            ease: 'easeOut',
+            when: 'beforeChildren',
+            staggerChildren: 0.1
+        }
+    },
+    exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: 'easeInOut' } }
+}
+
+const mobileItemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } }
+}
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
-    const navItemControls = useAnimation()
+    const toggleRef = useRef<HTMLButtonElement | null>(null)
 
-    const navItems = [
-        { href: '/', label: 'Trang Chủ' },
-        { href: '/about', label: 'Về tôi' },
-        { href: '/projects', label: 'Dự Án' },
-        { href: '/blog', label: 'Blog' },
-        { href: '/contact', label: 'Liên Hệ' },
-    ]
-
-    // Animate desktop nav items on mount
-    useEffect(() => {
-        navItemControls.start(i => ({
-            opacity: 1,
-            y: 0,
-            transition: { delay: i * 0.15, duration: 0.6, ease: 'easeOut' }
-        }))
-    }, [navItemControls])
-
-    // Variants for mobile menu container
-    const menuVariants = {
-        closed: { opacity: 0, y: -10, height: 0, transition: { duration: 0.3, ease: 'easeOut' } },
-        open: {
-            opacity: 1,
-            y: 0,
-            height: 'auto',
-            transition: {
-                duration: 0.3,
-                ease: 'easeOut',
-                when: 'beforeChildren',
-                staggerChildren: 0.1
-            }
-        }
-    }
-
-    // Variants for each mobile menu item
-    const itemVariants = {
-        closed: { opacity: 0, y: 10, transition: { duration: 0.4, ease: 'easeOut' } },
-        open: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } }
-    }
-
-    // Close menu on outside click
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            const target = e.target as Node
             if (
-                !document.getElementById('mobile-menu')?.contains(target) &&
-                !document.getElementById('menu-toggle')?.contains(target)
+                isOpen &&
+                !document.getElementById('mobile-menu')?.contains(e.target as Node) &&
+                !toggleRef.current?.contains(e.target as Node)
             ) {
                 setIsOpen(false)
             }
@@ -76,33 +78,21 @@ export default function Navbar() {
                     {navItems.map(({ href, label }, index) => (
                         <motion.li
                             key={href}
-                            custom={index}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={navItemControls}
                             className="relative group cursor-pointer"
+                            custom={index}
+                            initial="hidden"
+                            animate="visible"
+                            variants={desktopItemVariants}
                         >
                             <Link href={href} passHref legacyBehavior>
                                 <a className="text-base text-[var(--btn-text)] transition-colors duration-300">
                                     {label}
-                                    <span className="block h-0.5 bg-gray-500 max-w-0 group-hover:max-w-full transition-all duration-300 ease-in-out" />
+                                    <span className="block h-0.5 bg-gray-500 max-w-0 group-hover:max-w-full transition-all duration-300 ease-in-out"></span>
                                 </a>
                             </Link>
                         </motion.li>
                     ))}
                 </ul>
-
-                {/* Mobile Menu Toggle */}
-                <div className="md:hidden" id="menu-toggle">
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 rounded-md text-[var(--btn-text)] transition-colors duration-300"
-                        aria-label="Toggle menu"
-                    >
-                        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                    </button>
-                </div>
-
-                {/* Logo + Theme */}
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
                     <Link href="/" passHref legacyBehavior>
@@ -110,6 +100,18 @@ export default function Navbar() {
                             Tố An ❤️
                         </a>
                     </Link>
+                </div>
+
+                {/* Mobile Toggle */}
+                <div className="md:hidden">
+                    <button
+                        ref={toggleRef}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="p-2 rounded-md text-[var(--btn-text)] transition-colors duration-300"
+                        aria-label="Toggle menu"
+                    >
+                        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                    </button>
                 </div>
             </div>
 
@@ -119,14 +121,14 @@ export default function Navbar() {
                     <motion.div
                         id="mobile-menu"
                         className="md:hidden px-6 overflow-hidden bg-[var(--background-2)]"
-                        initial="closed"
-                        animate="open"
-                        exit="closed"
-                        variants={menuVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={mobileMenuVariants}
                     >
-                        <motion.ul className="flex flex-col space-y-4 font-semibold rounded-lg">
+                        <motion.ul className="flex flex-col space-y-4 py-4 font-semibold rounded-lg">
                             {navItems.map(({ href, label }) => (
-                                <motion.li key={href} variants={itemVariants}>
+                                <motion.li key={href} variants={mobileItemVariants}>
                                     <Link href={href} passHref legacyBehavior>
                                         <a
                                             className="block w-full text-left text-[var(--btn-text)] hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-200"
