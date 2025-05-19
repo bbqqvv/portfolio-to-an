@@ -163,5 +163,8 @@ export function ChibiBackground({ className = "" }: ChibiBackgroundProps) {
         }
     }, [theme]) // thêm theme vào dependencies để khi theme thay đổi sẽ chạy lại effect
 
-    return <canvas ref={canvasRef} className={`fixed inset-0 -z-10 ${className}`} />
+    return <div className="fixed inset-0 -z-10">
+        {/* hoặc canvas, hoặc background effect */}
+        <canvas ref={canvasRef} className="w-full h-full"></canvas>
+    </div>
 }

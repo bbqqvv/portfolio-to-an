@@ -8,13 +8,15 @@ interface AnimatedLinkProps {
     className?: string
     style?: React.CSSProperties
     children: React.ReactNode
+    onClick?: () => void // ✅ Add this
 }
 
-export default function AnimatedLink({ href, className, style, children }: AnimatedLinkProps) {
+export default function AnimatedLink({ href, className, style, children, onClick }: AnimatedLinkProps) {
     const { navigateWithAnimation } = usePageTransition()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault()
+        if (onClick) onClick() // ✅ Call custom logic
         navigateWithAnimation(href)
     }
 

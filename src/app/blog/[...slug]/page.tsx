@@ -1,6 +1,6 @@
 import { getPostBySlug } from "@/lib/api"
 import BlogPageClient from "./components/BlogPageClient"
-import PageTransition from "@/components/ui/page-transition"
+import PageTransition from "@/components/ui/page-transition-provider"
 
 interface Props {
     params: { slug: string }
