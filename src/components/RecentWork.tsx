@@ -1,73 +1,68 @@
 'use client';
 
-import { useRef, memo } from 'react';
+import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { works } from '@/data/works';
 import Link from 'next/link';
 
-const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
+const fadeInUp = (isMobile: boolean) => ({
+    hidden: { opacity: 0, y: isMobile ? 20 : 40 },
     visible: { opacity: 1, y: 0 },
-};
+});
 
-const fadeSide = (direction: 'left' | 'right') => ({
-    hidden: { opacity: 0, x: direction === 'left' ? -60 : 60 },
+const fadeSide = (direction: 'left' | 'right', isMobile: boolean) => ({
+    hidden: { opacity: 0, x: direction === 'left' ? (isMobile ? -20 : -60) : (isMobile ? 20 : 60) },
     visible: { opacity: 1, x: 0 },
 });
 
 const RecentWork = () => {
     const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+    const isInView = useInView(sectionRef, { once: true });
     const reduceMotion = useReducedMotion();
+
+    // Simple mobile detection (you can improve or use a hook/library)
+    const isMobile = typeof window !== 'undefined' ? window.innerWidth <= 768 : false;
 
     return (
         <section
             ref={sectionRef}
-            id="projects"
             className="py-16 md:py-24 relative overflow-hidden"
+            id="projects"
             style={{
                 backgroundColor: 'var(--background-1)',
                 color: 'var(--foreground)',
             }}
         >
-            {/* Background blur blobs */}
-            <div
-                className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                aria-hidden
-            >
-                <motion.div
-                    className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]"
-                    initial={{ y: 0, opacity: 0.7 }}
-                    animate={reduceMotion ? {} : { y: '10%', opacity: 0.5 }}
-                    transition={{
-                        duration: 2,
-                        ease: 'linear',
-                        repeat: Infinity,
-                        repeatType: 'mirror',
-                    }}
-                />
-                <motion.div
-                    className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
-                    initial={{ y: 0, opacity: 0.7 }}
-                    animate={reduceMotion ? {} : { y: '-10%', opacity: 0.5 }}
-                    transition={{
-                        duration: 2,
-                        ease: 'linear',
-                        repeat: Infinity,
-                        repeatType: 'mirror',
-                    }}
-                />
-            </div>
+            {/* Parallax-style background blur: Tắt trên mobile để giảm lag */}
+            {!isMobile && !reduceMotion && (
+                <div
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                    aria-hidden
+                >
+                    <motion.div
+                        className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]"
+                        initial={{ y: 0, opacity: 0.7 }}
+                        animate={{ y: '10%', opacity: 0.5 }}
+                        transition={{ duration: 3, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                    />
+                    <motion.div
+                        className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
+                        initial={{ y: 0, opacity: 0.7 }}
+                        animate={{ y: '-10%', opacity: 0.5 }}
+                        transition={{ duration: 3, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                    />
+                </div>
+            )}
 
             <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
                 <motion.div
                     className="mb-14 md:mb-20 section-title text-center md:text-left"
                     style={{ fontFamily: 'Eczar, sans-serif' }}
-                    variants={fadeInUp}
+                    variants={fadeInUp(isMobile)}
                     initial="hidden"
                     animate={isInView ? 'visible' : 'hidden'}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: isMobile ? 0.5 : 0.8 }}
                 >
                     <span className="inline-block px-4 text-3xl md:text-5xl font-bold">
                         Công Việc Gần Đây
@@ -80,17 +75,14 @@ const RecentWork = () => {
 
                         return (
                             <motion.div
-                                key={work.slug}
+                                key={index}
                                 className="project-item rounded-xl md:rounded-2xl overflow-hidden group"
                                 style={{ backgroundColor: 'var(--card-bg)' }}
-                                variants={fadeSide(from)}
+                                variants={fadeSide(from, isMobile)}
                                 initial="hidden"
-                                animate={isInView ? 'visible' : 'hidden'}
-                                transition={{
-                                    duration: 1,
-                                    ease: 'easeOut',
-                                    delay: reduceMotion ? 0 : index * 0.2,
-                                }}
+                                whileInView="visible"
+                                viewport={{ once: true, amount: 0.2 }}
+                                transition={{ duration: isMobile ? 0.6 : 1, ease: 'easeOut' }}
                             >
                                 <div className="md:flex flex-col md:flex-row h-full p-4 sm:p-6 md:p-10">
                                     {/* Text */}
@@ -126,7 +118,7 @@ const RecentWork = () => {
 
                                     {/* Image */}
                                     <div
-                                        className={`relative aspect-[4/3] w-full md:w-1/2 ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
+                                        className={`relative md:w-1/2 h-48 sm:h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
                                             } rounded-lg md:rounded-xl overflow-hidden`}
                                     >
                                         <div className="absolute inset-0 bg-white bg-opacity-60 dark:bg-opacity-40 pointer-events-none rounded-lg md:rounded-xl" />
@@ -149,4 +141,4 @@ const RecentWork = () => {
     );
 };
 
-export default memo(RecentWork);
+export default RecentWork;
