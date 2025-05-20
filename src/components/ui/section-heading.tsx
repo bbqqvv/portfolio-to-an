@@ -32,7 +32,7 @@ export function SectionHeading({ title, subtitle, centered = false, className = 
                 ref={headingRef}
                 initial={headingInitial}
                 animate={headingControls}
-                className="section-heading text-3xl md:text-4xl font-bold mb-4 font-heading"
+                className="section-heading text-4xl md:text-5xl font-bold mb-4 font-heading"
                 style={{ fontFamily: "var(--font-eczar)" }}
             >
                 {title}
@@ -42,7 +42,7 @@ export function SectionHeading({ title, subtitle, centered = false, className = 
                     ref={subtitleRef}
                     initial={subtitleInitial}
                     animate={subtitleControls}
-                    className="section-heading max-w-2xl mx-auto"
+                    className="section-heading max-w-2xl mx-auto text-xl"
                 >
                     {subtitle}
                 </motion.p>

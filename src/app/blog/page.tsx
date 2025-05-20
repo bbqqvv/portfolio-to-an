@@ -23,7 +23,7 @@ export default function BlogPage() {
     };
 
     return (
-        <main className="mx-auto container max-w-7xl px-4 md:px-8 lg:px-12 py-12 md:py-20">
+        <main className="mx-auto container max-w-8xl px-4 md:px-8 lg:px-12 ">
             {/* Header */}
             <header className="relative overflow-hidden py-8 sm:py-14">
                 <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 text-center">
