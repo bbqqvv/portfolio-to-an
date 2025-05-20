@@ -8,6 +8,8 @@
   --card-bg-dark: #3a2a1f;
   --text: #fefae0;
   --foreground: #2b1f17;
+  --btn-disabled: #ccc;
+  /* hoặc màu bạn mong muốn */
 
   --btn-text: #000;
   --btn-border: #4d5566;
@@ -29,6 +31,7 @@
   --background-2: #372112;
   --foreground: #fefae0;
   --background-dark: #2b1f17;
+  --btn-disabled: #555;
   --text: #fefae0;
   --card-bg: #3a2a1f;
   --card-bg-dark: #3a2a1f;

@@ -86,7 +86,7 @@ export default function ContactPage() {
                         <AnimatedCard
                             key={index}
                             className="p-6 rounded-2xl bg-white shadow-lg hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 ease-in-out border border-transparent hover:border-rose-300 flex flex-col items-center text-center"
-                            delay={index}
+                            index={index}
                         >
                             <div className="bg-rose-100 p-4 rounded-full mb-4 text-rose-600 text-xl shadow-inner">
                                 {info.icon}

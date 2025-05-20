@@ -1,32 +1,18 @@
 "use client";
 
-import { forwardRef, ReactNode } from "react";
-import { motion, useAnimation, Variants } from "framer-motion";
+import { ReactNode, forwardRef } from "react";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 interface AnimatedCardProps {
     children: ReactNode;
     className?: string;
-    delay?: number;
+    index?: number;
     hover?: boolean;
 }
 
-const variants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (custom: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-            ease: [0.25, 0.46, 0.45, 0.94],
-            delay: custom * 0.1,
-        },
-    }),
-};
-
 export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
-    ({ children, className = "", delay = 0, hover = true }, ref) => {
-        const controls = useAnimation();
+    ({ children, className = "", index = 0, hover = true }, ref) => {
         const [inViewRef, inView] = useInView({
             threshold: 0.15,
             triggerOnce: true,
@@ -41,28 +27,34 @@ export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
             }
         };
 
-        if (inView) {
-            controls.start("visible");
-        }
-
         return (
             <motion.div
+                layout
                 ref={setRefs}
-                className={className}
-                custom={delay}
-                initial="hidden"
-                animate={controls}
-                variants={variants}
-                style={{ willChange: "transform, opacity" }}
+                initial={{ opacity: 0, y: 18 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                    duration: 1.1, // 👈 chậm hơn
+                    delay: index * 0.15, // 👈 delay giữa các card
+                    ease: [0.22, 1, 0.36, 1], // easeOutQuart → rất mượt
+                }}
                 whileHover={
                     hover
                         ? {
-                            y: -5,
-                            scale: 1.02,
-                            transition: { duration: 0.25, ease: "easeOut" },
+                            y: -4,
+                            scale: 1.015,
+                            transition: {
+                                duration: 0.3,
+                                ease: [0.22, 1, 0.36, 1],
+                            },
                         }
-                        : {}
+                        : undefined
                 }
+                className={className}
+                style={{
+                    willChange: "opacity, transform",
+                    transformOrigin: "center",
+                }}
             >
                 {children}
             </motion.div>

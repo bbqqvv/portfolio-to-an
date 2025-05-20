@@ -5,7 +5,7 @@ export const allBlogPosts = [
         excerpt: "Khám phá lý do tại sao đặt người dùng làm trung tâm trong quá trình thiết kế sẽ tạo ra sản phẩm tốt hơn và khách hàng hài lòng hơn.",
         date: "5 Tháng 5, 2023",
         category: "Tư Duy Thiết Kế",
-        image: "/images/toan1.png",
+        image: "/images/an1.png",
         readTime: "5 phút đọc",
     },
     {
@@ -14,7 +14,7 @@ export const allBlogPosts = [
         excerpt: "Tìm hiểu cách các màu sắc khác nhau ảnh hưởng đến nhận thức của người dùng và cách sử dụng màu sắc hiệu quả trong thiết kế.",
         date: "18 Tháng 4, 2023",
         category: "Thiết Kế Giao Diện",
-        image: "/images/toan1.png",
+        image: "/images/an1.png",
         readTime: "7 phút đọc",
     },
     {
@@ -23,7 +23,7 @@ export const allBlogPosts = [
         excerpt: "Khám phá các phương pháp tốt nhất để tạo ra thiết kế phù hợp với người dùng có khả năng khác nhau.",
         date: "22 Tháng 3, 2023",
         category: "Tiếp Cận",
-        image: "/images/toan1.png",
+        image: "/images/an2.png",
         readTime: "6 phút đọc",
     },
     {
@@ -32,7 +32,7 @@ export const allBlogPosts = [
         excerpt: "Cập nhật những xu hướng thiết kế web mới nhất sẽ thống trị trong năm nay.",
         date: "10 Tháng 3, 2023",
         category: "Xu Hướng",
-        image: "/images/toan1.png",
+        image: "/images/anbum_01.png",
         readTime: "8 phút đọc",
     },
     {
@@ -41,7 +41,7 @@ export const allBlogPosts = [
         excerpt: "Hướng dẫn các nguyên tắc cơ bản và nâng cao về typography trong thiết kế giao diện.",
         date: "28 Tháng 2, 2023",
         category: "Typography",
-        image: "/images/toan1.png",
+        image: "/images/anbum_02.png",
         readTime: "6 phút đọc",
     },
     {

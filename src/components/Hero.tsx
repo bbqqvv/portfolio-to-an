@@ -22,10 +22,6 @@ export default function HeroSection() {
 
     // Disable typing effect on mobile
     useEffect(() => {
-        if (isMobile) {
-            setTypedText(fullText);
-            return;
-        }
 
         let index = 0;
         let isDeleting = false;
