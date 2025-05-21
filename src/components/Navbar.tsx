@@ -96,7 +96,7 @@ export default function Navbar() {
                     <ThemeToggle />
                     <Link href="/" passHref legacyBehavior>
                         <a className="font-bold text-lg" style={{ color: 'var(--btn-text)' }}>
-                            Tố An ❤️
+                            Tố An 
                         </a>
                     </Link>
                 </div>
