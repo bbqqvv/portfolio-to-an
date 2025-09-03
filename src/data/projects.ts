@@ -8,6 +8,7 @@ export interface Project {
     githubUrl: string
     category: "backend" | "frontend" | "module" | "tool"
     showGithub?: boolean
+    date: string // Thêm thuộc tính date
 }
 
 export const allProjects: Project[] = [
@@ -21,6 +22,7 @@ export const allProjects: Project[] = [
         liveUrl: "https://github.com/bbqqvv/BackendE-Commerce",
         githubUrl: "https://github.com/bbqqvv/BackendE-Commerce",
         category: "backend",
+        date: "2024-03-15",
     },
     {
         title: "Roway Shop",
@@ -32,6 +34,7 @@ export const allProjects: Project[] = [
         liveUrl: "https://roway-shop.vercel.app/",
         githubUrl: "https://github.com/bbqqvv/RowayShop.git",
         category: "frontend",
+        date: "2024-04-20",
     },
     {
         title: "Portfolio Website just for you",
@@ -44,6 +47,7 @@ export const allProjects: Project[] = [
         githubUrl: "https://github.com/bbqqvv/portfolio-to-an.git",
         category: "frontend",
         showGithub: false,
+        date: "2024-05-10",
     },
     {
         title: "TCV Education",
@@ -55,6 +59,7 @@ export const allProjects: Project[] = [
         liveUrl: "https://github.com/bbqqvv/Backend-Education",
         githubUrl: "https://github.com/bbqqvv/Backend-Education",
         category: "backend",
+        date: "2024-02-28",
     },
     {
         title: "Education React Native",
@@ -66,6 +71,7 @@ export const allProjects: Project[] = [
         liveUrl: "https://github.com/bbqqvv/Education-ReactNative.git",
         githubUrl: "https://github.com/bbqqvv/Education-ReactNative.git",
         category: "frontend",
+        date: "2024-03-05",
     },
     {
         title: "Audio To Text",
@@ -77,6 +83,7 @@ export const allProjects: Project[] = [
         liveUrl: "https://github.com/bbqqvv/ConvertAudioToText.git",
         githubUrl: "https://github.com/bbqqvv/ConvertAudioToText.git",
         category: "tool",
+        date: "2024-01-15",
     },
     {
         title: "Hand Check",
@@ -88,8 +95,8 @@ export const allProjects: Project[] = [
         liveUrl: "https://github.com/bbqqvv/HandCheckAI.git",
         githubUrl: "https://github.com/bbqqvv/HandCheckAI.git",
         category: "tool",
+        date: "2024-01-25",
     },
-
     {
         title: "Project HTVT",
         slug: "project-htvt",
@@ -100,6 +107,6 @@ export const allProjects: Project[] = [
         liveUrl: "https://github.com/bbqqvv/Project-HTVT.git",
         githubUrl: "https://github.com/bbqqvv/Project-HTVT.git",
         category: "module",
+        date: "2023-12-10",
     },
-
 ]
