@@ -1,24 +1,23 @@
 'use client'
 
 import { Sun, Moon } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { ThemeProvider, useTheme } from '@/contexts/ThemeContext'
 
 export default function ThemeToggle() {
-    const { setTheme, resolvedTheme } = useTheme()
-
-
-    const isDark = resolvedTheme === 'dark'
-
-    const toggleTheme = () => {
-        setTheme(isDark ? 'light' : 'dark')
-    }
+    return (
+        <ThemeProvider>
+            {/* Existing content of ThemeToggle */}
+        </ThemeProvider>
+    )
+    const { theme, toggleTheme } = useTheme()
+    const isDark = theme === 'dark'
 
     return (
         <button
             type="button"
             onClick={toggleTheme}
             aria-label={isDark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
-            className="p-2 rounded"
+            className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
         >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
         </button>

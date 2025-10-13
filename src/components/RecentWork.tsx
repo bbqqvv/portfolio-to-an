@@ -28,43 +28,44 @@ const RecentWork = () => {
         <section
             ref={sectionRef}
             className="py-16 md:py-24 relative overflow-hidden"
+            style={{ backgroundColor: 'var(--background-2)' }}
             id="projects"
-            style={{
-                backgroundColor: 'var(--background-1)',
-                color: 'var(--foreground)',
-            }}
         >
-            {/* Parallax-style background blur: Tắt trên mobile để giảm lag */}
+            {/* Decorative background blur elements */}
             {!isMobile && !reduceMotion && (
                 <div
-                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                    aria-hidden
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-30"
+                    aria-hidden="true"
                 >
                     <motion.div
-                        className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-200 blur-[100px]"
-                        initial={{ y: 0, opacity: 0.7 }}
-                        animate={{ y: '10%', opacity: 0.5 }}
-                        transition={{ duration: 3, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                        className="absolute top-1/4 -left-20 w-80 h-80 rounded-full blur-[120px]"
+                        style={{ backgroundColor: 'var(--accent)' }}
+                        initial={{ y: 0, opacity: 0.4 }}
+                        animate={{ y: '10%', opacity: 0.3 }}
+                        transition={{ duration: 4, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
                     />
                     <motion.div
-                        className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-indigo-200 blur-[100px]"
-                        initial={{ y: 0, opacity: 0.7 }}
-                        animate={{ y: '-10%', opacity: 0.5 }}
-                        transition={{ duration: 3, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
+                        className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full blur-[120px]"
+                        style={{ backgroundColor: 'var(--accent-secondary)' }}
+                        initial={{ y: 0, opacity: 0.4 }}
+                        animate={{ y: '-10%', opacity: 0.3 }}
+                        transition={{ duration: 4, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
                     />
                 </div>
             )}
 
             <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative">
                 <motion.div
-                    className="mb-14 md:mb-20 section-title text-center md:text-left"
-                    style={{ fontFamily: 'Eczar, sans-serif' }}
+                    className="mb-14 md:mb-20 section-title text-center md:text-left font-[Eczar]"
                     variants={fadeInUp(isMobile)}
                     initial="hidden"
                     animate={isInView ? 'visible' : 'hidden'}
                     transition={{ duration: isMobile ? 0.5 : 0.8 }}
                 >
-                    <span className="inline-block px-4 text-3xl md:text-5xl font-bold">
+                    <span 
+                        className="inline-block px-4 text-3xl md:text-5xl font-bold"
+                        style={{ color: 'var(--foreground)' }}
+                    >
                         Công Việc Gần Đây
                     </span>
                 </motion.div>
@@ -76,8 +77,12 @@ const RecentWork = () => {
                         return (
                             <motion.div
                                 key={index}
-                                className="project-item rounded-xl md:rounded-2xl overflow-hidden group"
-                                style={{ backgroundColor: 'var(--card-bg)' }}
+                                className="project-item rounded-xl md:rounded-2xl overflow-hidden group backdrop-blur-sm border shadow-lg hover:shadow-xl transition-all duration-300"
+                                style={{
+                                    backgroundColor: 'var(--card-bg)',
+                                    borderColor: 'var(--border-light)',
+                                    borderWidth: '1px'
+                                }}
                                 variants={fadeSide(from, isMobile)}
                                 initial="hidden"
                                 whileInView="visible"
@@ -91,24 +96,21 @@ const RecentWork = () => {
                                             }`}
                                     >
                                         <h3
-                                            className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4"
-                                            style={{ fontFamily: 'Work Sans, sans-serif' }}
+                                            className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-[Work_Sans]"
+                                            style={{ color: 'var(--foreground)' }}
                                         >
                                             {work.title}
                                         </h3>
                                         <p
-                                            className="text-sm sm:text-base mb-4 md:mb-8 leading-relaxed"
-                                            style={{
-                                                fontFamily: 'Work Sans, sans-serif',
-                                                color: 'var(--text-card)',
-                                            }}
+                                            className="text-sm sm:text-base mb-4 md:mb-8 leading-relaxed font-[Work_Sans]"
+                                            style={{ color: 'var(--text)' }}
                                         >
                                             {work.description}
                                         </p>
                                         <div className="mt-auto">
                                             <Link
                                                 href={`/blog/${work.slug}`}
-                                                className="text-sm md:text-base font-medium transition-transform duration-300 ease-out group-hover:translate-x-1 inline-block"
+                                                className="text-sm md:text-base font-bold transition-all duration-300 ease-out group-hover:translate-x-2 inline-flex items-center gap-2 font-[Work_Sans]"
                                                 style={{ color: 'var(--accent)' }}
                                             >
                                                 Xem chi tiết →
@@ -121,7 +123,6 @@ const RecentWork = () => {
                                         className={`relative md:w-1/2 h-48 sm:h-64 md:h-auto ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'
                                             } rounded-lg md:rounded-xl overflow-hidden`}
                                     >
-                                        <div className="absolute inset-0 bg-white bg-opacity-60 dark:bg-opacity-40 pointer-events-none rounded-lg md:rounded-xl" />
                                         <Image
                                             src={work.image}
                                             alt={work.title}

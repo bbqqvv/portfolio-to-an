@@ -69,11 +69,8 @@ export default function HeroSection() {
         <>
             <div
                 id="home"
-                className="bg-[#ffeed9] py-12 sm:py-16 md:py-20 lg:py-1"
-                style={{
-                    backgroundColor: 'var(--background-2)',
-                    color: 'var(--foreground)',
-                }}
+                className="py-12 sm:py-16 md:py-20 lg:py-1"
+                style={{ backgroundColor: 'var(--background-1)' }}
             >
                 <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex flex-col-reverse md:flex-row items-center justify-between gap-10">
                     {/* Text Section */}
@@ -83,12 +80,15 @@ export default function HeroSection() {
                             initial="hidden"
                             animate="visible"
                             transition={{ duration: 0.6 }}
-                            className="text-sm font-mono mb-4 text-black min-h-[1.5rem]"
-                            style={{ color: 'var(--text-card)' }}
+                            className="text-sm font-mono mb-4 min-h-[1.5rem]"
+                            style={{ color: 'var(--foreground)' }}
                         >
                             <span>{typedText}</span>
                             {!isMobile && (
-                                <span className="inline-block w-[1px] bg-teal-600 animate-blink ml-1" />
+                                <span 
+                                    className="inline-block w-[1px] animate-blink ml-1" 
+                                    style={{ backgroundColor: 'var(--accent)', height: '1rem' }}
+                                />
                             )}
                         </motion.div>
 
@@ -97,12 +97,15 @@ export default function HeroSection() {
                             initial="hidden"
                             animate="visible"
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-                            style={{ fontFamily: 'Eczar, sans-serif', color: 'var(--text-card)' }}
+                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight font-[Eczar]"
                         >
-                            <span className="text-#ffeed9">Lưu Thị Tố An</span><br />
-                            <span className="bg-gradient-to-r from-teal-500 to-emerald-400 bg-clip-text text-transparent">
-                                {/* mô tả */}
+                            <span 
+                                className="bg-gradient-to-r bg-clip-text text-transparent"
+                                style={{
+                                    backgroundImage: 'linear-gradient(to right, var(--accent), var(--accent-secondary), var(--accent))'
+                                }}
+                            >
+                                Lưu Thị Tố An
                             </span>
                         </motion.h1>
 
@@ -111,11 +114,8 @@ export default function HeroSection() {
                             initial="hidden"
                             animate="visible"
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="text-base sm:text-lg text-gray-700 leading-relaxed mb-8 font-sans font-semibold"
-                            style={{
-                                fontFamily: 'Eczar, sans-serif',
-                                color: 'var(--text-card)',
-                            }}
+                            className="text-base sm:text-lg leading-relaxed mb-8 font-semibold font-[Work_Sans]"
+                            style={{ color: 'var(--text)' }}
                         >
                             🌟 Chào bạn! Mình là Tố An – đam mê sáng tạo và luôn tìm cách cải thiện trải nghiệm người dùng. Mình tin rằng thiết kế không chỉ phải đẹp mà còn phải dễ sử dụng. Cùng khám phá những điều mới mẻ nhé!
                         </motion.p>
@@ -126,33 +126,39 @@ export default function HeroSection() {
                             animate="visible"
                             transition={{ duration: 0.6, delay: 0.3 }}
                             className="flex flex-col sm:flex-row sm:gap-4 gap-3 w-full items-center md:items-start"
-                            style={{ fontFamily: 'Eczar, sans-serif' }}
                         >
                             <Link
                                 href="/work"
-                                className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 text-white rounded-xl relative overflow-hidden text-base font-semibold"
+                                className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl text-base font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 font-[Work_Sans]"
                                 style={{
-                                    backgroundColor: "#4e5e80",
-                                    fontFamily: 'Work Sans, sans-serif',
+                                    background: 'linear-gradient(to right, var(--accent), var(--accent-secondary))',
+                                    color: 'var(--accent-foreground)',
+                                    boxShadow: '0 10px 25px -5px rgba(236, 72, 153, 0.3)'
                                 }}
                             >
                                 <span className="relative z-10">Xem CV</span>
-                                <ArrowRight
-                                    className="ml-2 h-4 w-4 relative z-10 text-[#4e5e80] rounded-sm font-bold"
-                                    style={{ backgroundColor: "#ffffff" }}
-                                />
+                                <ArrowRight className="ml-2 h-4 w-4 relative z-10" />
                             </Link>
 
                             <button
                                 onClick={() => scrollToSection('about')}
-                                className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl border-2 border-[#4e5e80] hover:bg-teal-50 text-base font-semibold hover:text-black"
+                                className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 rounded-xl border-2 text-base font-semibold transition-all duration-300 font-[Work_Sans]"
                                 style={{
-                                    fontFamily: 'Work Sans, sans-serif',
                                     borderColor: 'var(--btn-border)',
+                                    color: 'var(--btn-border)',
+                                    backgroundColor: 'transparent'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'var(--btn-hover-bg)';
+                                    e.currentTarget.style.color = 'var(--btn-hover-text)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                    e.currentTarget.style.color = 'var(--btn-border)';
                                 }}
                             >
                                 <span>Về tôi</span>
-                                <ArrowRight className="ml-2 h-4 w-4 text-[#4e5e80] rounded-sm transform group-hover:translate-x-1 transition-transform" />
+                                <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                             </button>
                         </motion.div>
                     </div>

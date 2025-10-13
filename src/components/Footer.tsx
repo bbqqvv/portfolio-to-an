@@ -43,31 +43,34 @@ export default function Footer() {
     return (
         <footer
             id="contact"
-            className="bg-[#ffeed9] dark:bg-[#372112] px-6 md:px-12 lg:px-20 py-20 flex items-center justify-center"
-            style={{ backgroundColor: 'var(--background-2)' }}
+            className="px-6 md:px-12 lg:px-20 py-20 flex items-center justify-center border-t"
+            style={{
+                backgroundColor: 'var(--background-1)',
+                borderColor: 'var(--border-light)'
+            }}
         >
             <div className="w-full max-w-6xl flex flex-col md:flex-row items-center md:items-start justify-between gap-12 text-center md:text-left">
                 {/* Left: Text + Button */}
                 <div className="flex flex-col items-center md:items-start">
                     <h2
-                        className="text-3xl md:text-4xl font-bold mb-6 max-w-xl leading-snug"
-                        style={{ fontFamily: 'Eczar, serif' }}
+                        className="text-3xl md:text-4xl font-bold mb-6 max-w-xl leading-snug font-[Eczar]"
+                        style={{ color: 'var(--foreground)' }}
                     >
                         Hãy cùng nhau làm việc và biến mọi thứ trở nên thật đáng yêu và hữu ích.
                     </h2>
-                    <Link href="/contact" legacyBehavior>
+                    <Link href="/contact">
                         <motion.button
                             type="button"
-                            className="px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 border-2 rounded-lg md:rounded-xl text-sm sm:text-base transition"
+                            className="px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 font-semibold rounded-lg md:rounded-xl text-sm sm:text-base transition-all shadow-lg font-[Work_Sans]"
                             style={{
-                                borderColor: 'var(--btn-border)',
+                                background: 'linear-gradient(to right, var(--accent), var(--accent-secondary))',
+                                color: 'var(--accent-foreground)',
                                 cursor: 'pointer',
                                 transformOrigin: 'center',
+                                boxShadow: '0 10px 25px -5px rgba(236, 72, 153, 0.3)'
                             }}
-                            initial="initial"
-                            whileHover="hover"
-                            animate="initial"
-                            variants={btnVariants}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.98 }}
                         >
                             Liên hệ với tôi
                         </motion.button>
@@ -81,16 +84,23 @@ export default function Footer() {
                             key={index}
                             href={href}
                             aria-label="Social link"
-                            className="p-2 rounded-full border flex items-center justify-center transition-all"
-                            style={{ borderColor: 'var(--btn-border)', transformOrigin: 'center' }}
-                            initial="initial"
-                            whileHover="hover"
-                            animate="initial"
-                            variants={iconVariants}
+                            className="p-3 rounded-full border-2 flex items-center justify-center transition-all shadow-md"
+                            style={{ 
+                                borderColor: 'var(--accent)',
+                                color: 'var(--accent)',
+                                transformOrigin: 'center'
+                            }}
+                            whileHover={{ 
+                                scale: 1.1, 
+                                rotate: 5,
+                                backgroundColor: 'var(--accent)',
+                                color: 'var(--accent-foreground)'
+                            }}
+                            whileTap={{ scale: 0.95 }}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <Icon className="w-5 h-5" style={{ color: 'inherit' }} />
+                            <Icon className="w-5 h-5" />
                         </motion.a>
                     ))}
                 </div>

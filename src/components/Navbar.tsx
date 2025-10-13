@@ -68,8 +68,12 @@ export default function Navbar() {
 
     return (
         <nav
-            className="sticky top-0 z-50 bg-[var(--background-2)] bg-opacity-70 backdrop-blur-md transition duration-300"
-            style={{ fontFamily: 'Work Sans, sans-serif' }}
+            className="sticky top-0 z-50 backdrop-blur-md transition duration-300"
+            style={{ 
+                backgroundColor: 'var(--background-2)',
+                fontFamily: 'Work Sans, sans-serif',
+                opacity: 0.95
+            }}
         >
             <div className="container mx-auto flex items-center justify-between px-6 py-4 md:px-10">
                 {/* Desktop Nav */}
@@ -83,21 +87,28 @@ export default function Navbar() {
                             animate="visible"
                             variants={desktopItemVariants}
                         >
-                            <Link href={href} passHref legacyBehavior>
-                                <a className="text-base text-[var(--btn-text)] transition-colors duration-300">
-                                    {label}
-                                    <span className="block h-0.5 bg-gray-500 max-w-0 group-hover:max-w-full transition-all duration-300 ease-in-out"></span>
-                                </a>
+                            <Link 
+                                href={href}
+                                className="text-base transition-colors duration-300"
+                                style={{ color: 'var(--foreground)' }}
+                            >
+                                {label}
+                                <span 
+                                    className="block h-0.5 max-w-0 group-hover:max-w-full transition-all duration-300 ease-in-out"
+                                    style={{ backgroundColor: 'var(--accent)' }}
+                                ></span>
                             </Link>
                         </motion.li>
                     ))}
                 </ul>
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
-                    <Link href="/" passHref legacyBehavior>
-                        <a className="font-bold text-lg" style={{ color: 'var(--btn-text)' }}>
-                            Tố An 
-                        </a>
+                    <Link 
+                        href="/"
+                        className="font-bold text-lg" 
+                        style={{ color: 'var(--foreground)' }}
+                    >
+                        Tố An 
                     </Link>
                 </div>
 
@@ -106,7 +117,8 @@ export default function Navbar() {
                     <button
                         ref={toggleRef}
                         onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 rounded-md text-[var(--btn-text)] transition-colors duration-300"
+                        className="p-2 rounded-md transition-colors duration-300"
+                        style={{ color: 'var(--foreground)' }}
                         aria-label="Toggle menu"
                     >
                         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -119,7 +131,8 @@ export default function Navbar() {
                 {isOpen && (
                     <motion.div
                         id="mobile-menu"
-                        className="md:hidden px-6 overflow-hidden bg-[var(--background-2)]"
+                        className="md:hidden px-6 overflow-hidden"
+                        style={{ backgroundColor: 'var(--background-2)' }}
                         initial="hidden"
                         animate="visible"
                         exit="exit"
@@ -128,13 +141,13 @@ export default function Navbar() {
                         <motion.ul className="flex flex-col space-y-4 py-4 font-semibold rounded-lg">
                             {navItems.map(({ href, label }) => (
                                 <motion.li key={href} variants={mobileItemVariants}>
-                                    <Link href={href} passHref legacyBehavior>
-                                        <a
-                                            className="block w-full text-left text-[var(--btn-text)] hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-200"
-                                            onClick={() => setIsOpen(false)}
-                                        >
-                                            {label}
-                                        </a>
+                                    <Link 
+                                        href={href}
+                                        className="block w-full text-left transition-colors duration-200"
+                                        style={{ color: 'var(--foreground)' }}
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {label}
                                     </Link>
                                 </motion.li>
                             ))}

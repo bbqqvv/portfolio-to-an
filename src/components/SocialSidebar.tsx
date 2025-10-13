@@ -38,22 +38,16 @@ export default function SocialSidebar() {
         visible: (i: number) => ({
             opacity: 1,
             y: 0,
-            transition: { delay: 1.2 + i * 0.15, duration: 0.6, ease: [0.175, 0.885, 0.32, 1.275] }, // back.out(1.7) approx
+            transition: { delay: 1.2 + i * 0.15, duration: 0.6, ease: [0.175, 0.885, 0.32, 1.275] },
         }),
         hover: {
             y: -4,
             scale: 1.12,
-            backgroundColor: 'rgba(56, 34, 19, 0.08)',
-            color: '#cc3700',
-            boxShadow: '0 4px 12px rgba(56, 34, 19, 0.2)',
             transition: { duration: 0.3, ease: 'easeOut' },
         },
         rest: {
             y: 0,
             scale: 1,
-            backgroundColor: 'transparent',
-            color: 'var(--btn-text)',
-            boxShadow: 'none',
             transition: { duration: 0.3, ease: 'easeOut' },
         },
     }
@@ -62,15 +56,11 @@ export default function SocialSidebar() {
         hidden: {
             opacity: 0,
             x: 0,
-            color: '#ffffff',
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
             transition: { duration: 0.3, ease: 'easeOut' },
         },
         visible: {
             opacity: 1,
             x: -6,
-            color: '#382213',
-            backgroundColor: '#ffeed9',
             transition: { duration: 0.3, ease: 'easeOut' },
         },
     }
@@ -109,16 +99,19 @@ export default function SocialSidebar() {
                         aria-label={link.label}
                         className="p-2 rounded-full transition-colors duration-300 inline-block"
                         style={{
-                            borderColor: 'var(--btn-border)',
+                            color: 'var(--foreground)',
                             display: 'inline-block',
                         }}
                         variants={iconVariants}
                         custom={i}
                         initial="hidden"
                         animate="visible"
-                        whileHover="hover"
-                        onHoverStart={() => { }}
-                        onHoverEnd={() => { }}
+                        whileHover={{
+                            y: -4,
+                            scale: 1.12,
+                            color: 'var(--accent)',
+                            transition: { duration: 0.3 }
+                        }}
                     >
                         {link.icon}
                     </motion.a>
@@ -129,11 +122,13 @@ export default function SocialSidebar() {
                             fontSize: '12px',
                             letterSpacing: '0.5px',
                             whiteSpace: 'nowrap',
+                            backgroundColor: 'var(--card-bg)',
+                            color: 'var(--foreground)',
+                            border: '1px solid var(--border-light)'
                         }}
                         variants={tooltipVariants}
                         initial="hidden"
                         whileHover="visible"
-                    // To sync tooltip with icon hover, parent handles hover, so using pointer-events-none to keep tooltip from interfering
                     >
                         {link.label}
                     </motion.span>
@@ -143,9 +138,7 @@ export default function SocialSidebar() {
             <motion.div
                 className="h-16 w-0.5 mt-2"
                 style={{
-                    background:
-                        'linear-gradient(to top, #fb923c, transparent)',
-                    filter: 'drop-shadow(0 0 6px #fb923c88)',
+                    background: 'linear-gradient(to top, var(--accent), transparent)',
                     originY: 1,
                 }}
                 variants={lineVariants}

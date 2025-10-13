@@ -2,15 +2,11 @@ import { Eczar, Work_Sans } from "next/font/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import { ChibiBackground } from "@/components/ui/chibi-background";
 import SocialSidebar from "@/components/SocialSidebar";
-import { ChibiProvider } from "@/components/ui/chibi-context";
-
-// Import Eczar font
 const eczar = Eczar({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
@@ -74,20 +70,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased "bg-[rgb(255,250,245)] dark:bg-[rgb(20,20,30)]`}
+        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`}
+        style={{ backgroundColor: 'var(--background-1)', color: 'var(--foreground)' }}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
+        <ThemeProvider>
           <Navbar />
           <CustomCursor />
-          <div className="relative">
-            <ChibiProvider>
-              {children}
-            </ChibiProvider>
-          </div>
+          {children}
           <SocialSidebar />
           <Footer />
         </ThemeProvider>
       </body>
-    </html >
+    </html>
   );
 }

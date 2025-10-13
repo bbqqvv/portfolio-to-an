@@ -1,50 +1,83 @@
 @import "tailwindcss";
 
+/* Light Theme - Rose Pink & Lavender */
 :root {
-  --background-1: #ffeed9;
-  --background-2: #FAF4E7;
-  --background-dark: #2b1f17;
-  --card-bg: #fff8f2;
-  --card-bg-dark: #3a2a1f;
-  --text: #fefae0;
-  --foreground: #2b1f17;
-  --btn-disabled: #ccc;
-  /* hoặc màu bạn mong muốn */
-
-  --btn-text: #000;
-  --btn-border: #4d5566;
-  --btn-hover-bg: #000;
-  --btn-hover-text: #fff;
-
-  --accent: #e26a2c;
-  --accent-foreground: #fff;
-
-  --cursor-border: #f39c12;
-  --cursor-shadow: rgba(243, 156, 18, 0.6);
-
+  /* Backgrounds */
+  --background-1: #FFF5F7;        /* Soft blush white */
+  --background-2: #FFF0F5;        /* Very light rose */
+  --background-dark: #FFF5F7;
+  --card-bg: #FFFFFF;             /* Pure white cards */
+  --card-bg-dark: #FFF0F5;        /* Subtle rose for depth */
+  
+  /* Text Colors */
+  --text: #1E1E23;                /* Darker charcoal */
+  --foreground: #1E1E23;
+  --text-secondary: #4B4B55;      /* Softer gray */
+  --text-muted: #73737D;          /* Light gray */
+  --text-card: #2D2D32;           /* Rich dark gray */
+  
+  /* Buttons */
+  --btn-disabled: #E5E5E5;
+  --btn-text: #FFFFFF;
+  --btn-border: #EC4899;          /* Rose pink */
+  --btn-hover-bg: #DB2777;        /* Darker rose */
+  --btn-hover-text: #FFFFFF;
+  
+  /* Accents - Rose Pink & Lavender */
+  --accent: #EC4899;              /* Rose pink */
+  --accent-secondary: #C084FC;    /* Lavender */
+  --accent-foreground: #FFFFFF;
+  
+  /* Custom Cursor */
+  --cursor-border: #EC4899;
+  --cursor-shadow: rgba(236, 72, 153, 0.5);
+  
+  /* Borders & Shadows */
+  --border-light: #FCE7F3;
+  --border-normal: #FBCFE8;
+  --shadow-warm: 0 20px 25px -5px rgba(236, 72, 153, 0.12);
+  
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark Theme - Graphite Blue with Rose & Lavender */
 .dark {
-  --background-1: #2b1f17;
-  --background-2: #372112;
-  --foreground: #fefae0;
-  --background-dark: #2b1f17;
-  --btn-disabled: #555;
-  --text: #fefae0;
-  --card-bg: #3a2a1f;
-  --card-bg-dark: #3a2a1f;
-  --btn-text: #fefae0;
-  --btn-border: #fefae0;
-  --btn-hover-bg: #fefae0;
-  --btn-hover-text: #2b1f17;
-
-  --accent: #f39c12;
-  --accent-foreground: #0a0a0a;
-
-  --cursor-border: #f39c12;
-  --cursor-shadow: rgba(243, 156, 18, 0.8);
+  /* Backgrounds - Graphite Blue */
+  --background-1: #0F141C;        /* Deep graphite blue */
+  --background-2: #161E2A;        /* Lighter graphite */
+  --background-dark: #0F141C;
+  --card-bg: #1A2332;             /* Card graphite blue */
+  --card-bg-dark: #161E2A;        /* Darker card variant */
+  
+  /* Text Colors - Cool White/Blue-Gray */
+  --text: #F0F5FF;                /* Soft white */
+  --foreground: #F0F5FF;
+  --text-secondary: #B9C3D2;      /* Light blue-gray */
+  --text-muted: #8791A5;          /* Muted blue-gray */
+  --text-card: #DCE6F5;           /* Card text */
+  
+  /* Buttons */
+  --btn-disabled: #2A374B;
+  --btn-text: #FFFFFF;
+  --btn-border: #F472B6;          /* Rose pink */
+  --btn-hover-bg: #F9A8D4;        /* Light rose */
+  --btn-hover-text: #0F141C;
+  
+  /* Accents - Rose Pink & Lavender (POP on blue!) */
+  --accent: #F472B6;              /* Rose pink */
+  --accent-secondary: #C084FC;    /* Lavender */
+  --accent-foreground: #0F141C;
+  
+  /* Custom Cursor */
+  --cursor-border: #F472B6;
+  --cursor-shadow: rgba(244, 114, 182, 0.6);
+  
+  /* Borders & Shadows */
+  --border-light: #2A374B;
+  --border-normal: #344359;
+  --shadow-warm: 0 20px 25px -5px rgba(244, 114, 182, 0.15);
 }
 
 @layer base {
@@ -57,6 +90,16 @@
 @layer utilities {
   .text {
     color: var(--text);
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
   }
 }
 
@@ -81,8 +124,8 @@
 }
 
 .custom-cursor.is-hover {
-  border-color: #e74c3c;
+  border-color: #EC4899;          /* Rose pink on hover */
   width: 48px;
   height: 48px;
-  box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.8);
 }

@@ -24,8 +24,8 @@ export default function AboutMeComponent() {
         <div
             id="about"
             ref={containerRef}
-            className="flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 md:p-8 lg:p-1 gap-6 md:gap-8 lg:gap-12"
-            style={{ backgroundColor: 'var(--background-1)' }}
+            className="flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 md:p-8 lg:p-1 gap-6 md:gap-8 lg:gap-12 from-pink-50 via-purple-50/30 to-white dark:from-[#0F141C] dark:via-[#1a1f2e] dark:to-[#0F141C]"
+
         >
             {/* Text content */}
             <motion.div
@@ -36,10 +36,10 @@ export default function AboutMeComponent() {
                 animate={reduceMotion ? 'visible' : isInView ? 'visible' : 'hidden'}
                 transition={transition}
             >
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 font-[Eczar]">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 font-[Eczar]" >
                     Một chút về tôi
                 </h2>
-                <div className="font-[Work_Sans] text-base sm:text-lg md:text-xl space-y-4">
+                <div className="font-[Work_Sans] text-base sm:text-lg md:text-xl space-y-4" >
                     <p>
                         Tôi là Tố An, hiện đang là sinh viên tại Việt Nam. Tôi đang theo học
                         chuyên ngành thiết kế giao diện người dùng và phát triển web.
@@ -55,7 +55,7 @@ export default function AboutMeComponent() {
                         lách và khám phá những sở thích mới.
                     </p>
                 </div>
-                <Link href="/contact" aria-label="Liên hệ với tôi" passHref>
+                <Link href="/contact" aria-label="Liên hệ với tôi">
                     <motion.button
                         role="button"
                         className="mt-6 px-6 py-3 border-2 rounded-xl text-sm sm:text-base transition-all"
