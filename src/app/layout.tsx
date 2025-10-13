@@ -1,12 +1,8 @@
 import { Eczar, Work_Sans } from "next/font/google";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import Footer from "@/components/Footer";
 import { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import SocialSidebar from "@/components/SocialSidebar";
+import ClientLayout from "@/components/ClientLayout";
 const eczar = Eczar({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
@@ -69,17 +65,55 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  // Get system theme
+                  const getSystemTheme = () => {
+                    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  };
+                  
+                  // Get saved theme preference (default to 'system')
+                  const savedTheme = localStorage.getItem('portfolio-theme') || 'system';
+                  
+                  // Determine which theme to apply
+                  let themeToApply = 'light';
+                  
+                  if (savedTheme === 'dark') {
+                    themeToApply = 'dark';
+                  } else if (savedTheme === 'light') {
+                    themeToApply = 'light';
+                  } else if (savedTheme === 'system') {
+                    themeToApply = getSystemTheme();
+                  }
+                  
+                  // Apply theme immediately
+                  if (themeToApply === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                  
+                  // Store the resolved theme for React to pick up
+                  document.documentElement.setAttribute('data-theme', savedTheme);
+                  document.documentElement.setAttribute('data-resolved-theme', themeToApply);
+                } catch (e) {
+                  // Fallback to light theme on error
+                  document.documentElement.classList.remove('dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${eczar.variable} ${workSans.variable} antialiased`}
         style={{ backgroundColor: 'var(--background-1)', color: 'var(--foreground)' }}
       >
-        <ThemeProvider>
-          <Navbar />
-          <CustomCursor />
-          {children}
-          <SocialSidebar />
-          <Footer />
-        </ThemeProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
