@@ -1,9 +1,9 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, useScroll, useSpring } from "framer-motion"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
@@ -11,7 +11,7 @@ import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import oneDark from "react-syntax-highlighter/dist/esm/styles/prism/one-dark"
-import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react"
+import { Calendar, Clock, ArrowLeft, Share2, BookOpen, User } from "lucide-react"
 import MetaData from "./Metadata"
 import TableOfContents from "./TableOfContents"
 import ArticleFooter from "./ArticleFooter"
@@ -39,6 +39,22 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
     const articleRef = useRef(null)
     const isInView = useInView(articleRef, { once: true, amount: 0.1 })
 
+    // Reading progress bar
+    const { scrollYProgress } = useScroll()
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    })
+
+    // Calculate reading time
+    const [readingTime, setReadingTime] = useState(10)
+    useEffect(() => {
+        const words = contentMarkdown.split(/\s+/).length
+        const minutes = Math.ceil(words / 200) // Average reading speed
+        setReadingTime(minutes)
+    }, [contentMarkdown])
+
     // Get related posts (same category, excluding current post)
     const relatedPosts = allBlogPosts
         .filter(post => post.slug !== slug && post.category === metadata.tags?.[0])
@@ -54,33 +70,47 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
             <MetaData metadata={metadata} url={url} />
             <ScrollToTop />
 
+            {/* Reading Progress Bar */}
+            <motion.div
+                className="fixed top-0 left-0 right-0 h-1 z-50 origin-left"
+                style={{ 
+                    scaleX,
+                    backgroundColor: 'var(--accent)',
+                    transformOrigin: '0%'
+                }}
+            />
+
             <main 
                 className="min-h-screen"
                 style={{ backgroundColor: 'var(--background-1)' }}
             >
                 {/* Hero Section with Cover Image */}
                 {metadata.coverImage && (
-                    <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden">
+                    <div className="relative h-[50vh] md:h-[65vh] w-full overflow-hidden">
                         <Image
                             src={metadata.coverImage}
                             alt={metadata.title || 'Blog cover'}
                             fill
-                            className="object-cover"
+                            className="object-cover transition-transform duration-700 hover:scale-105"
                             priority
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
                         
                         {/* Back button */}
-                        <div className="absolute top-8 left-4 md:left-8 z-10">
+                        <div className="absolute top-6 left-4 md:left-8 z-10">
                             <Link href="/blog">
                                 <motion.button
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md font-semibold font-[Work_Sans] shadow-lg"
+                                    className="flex items-center gap-2 px-5 py-2.5 rounded-full backdrop-blur-xl font-semibold font-[Work_Sans] shadow-xl transition-all duration-300"
                                     style={{
-                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.15)',
                                         color: 'white',
-                                        border: '1px solid rgba(255, 255, 255, 0.2)'
+                                        border: '1px solid rgba(255, 255, 255, 0.3)'
                                     }}
-                                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+                                    whileHover={{ 
+                                        scale: 1.05, 
+                                        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                                        boxShadow: '0 8px 30px rgba(0,0,0,0.3)'
+                                    }}
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <ArrowLeft className="w-4 h-4" />
@@ -90,51 +120,76 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                         </div>
 
                         {/* Title and meta overlay */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
-                            <div className="max-w-4xl mx-auto">
+                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-16">
+                            <motion.div 
+                                className="max-w-5xl mx-auto"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                            >
                                 {metadata.tags && metadata.tags.length > 0 && (
-                                    <div className="flex flex-wrap gap-2 mb-4">
+                                    <motion.div 
+                                        className="flex flex-wrap gap-2 mb-5"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.4 }}
+                                    >
                                         {metadata.tags.map((tag, index) => (
-                                            <span
+                                            <motion.span
                                                 key={index}
-                                                className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md font-[Work_Sans]"
+                                                className="px-4 py-1.5 rounded-full text-xs font-bold backdrop-blur-xl font-[Work_Sans] shadow-lg"
                                                 style={{
                                                     background: 'var(--accent)',
-                                                    color: 'var(--accent-foreground)'
+                                                    color: 'var(--accent-foreground)',
+                                                    border: '1px solid rgba(255, 255, 255, 0.2)'
                                                 }}
+                                                whileHover={{ scale: 1.05, y: -2 }}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
                                             >
                                                 {tag}
-                                            </span>
+                                            </motion.span>
                                         ))}
-                                    </div>
+                                    </motion.div>
                                 )}
-                                <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 font-[Eczar]">
+                                <motion.h1 
+                                    className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-[Eczar] leading-tight"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8, delay: 0.3 }}
+                                >
                                     {metadata.title}
-                                </h1>
-                                <div className="flex items-center gap-4 text-white/90 text-sm font-[Work_Sans]">
+                                </motion.h1>
+                                <motion.div 
+                                    className="flex flex-wrap items-center gap-4 md:gap-6 text-white/95 text-sm font-[Work_Sans]"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.6, delay: 0.5 }}
+                                >
+                                    {metadata.author && (
+                                        <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full">
+                                            <User className="w-4 h-4" />
+                                            {metadata.author}
+                                        </span>
+                                    )}
                                     {metadata.date && (
-                                        <span className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full">
                                             <Calendar className="w-4 h-4" />
                                             {metadata.date}
                                         </span>
                                     )}
-                                    <span className="flex items-center gap-2">
-                                        <Clock className="w-4 h-4" />
-                                        10 phút đọc
+                                    <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full">
+                                        <BookOpen className="w-4 h-4" />
+                                        {readingTime} phút đọc
                                     </span>
-                                    {metadata.author && (
-                                        <>
-                                            <span>•</span>
-                                            <span>{metadata.author}</span>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
+                                </motion.div>
+                            </motion.div>
                         </div>
                     </div>
                 )}
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex flex-col lg:flex-row gap-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 flex flex-col lg:flex-row gap-8 lg:gap-12">
                     {/* Main Article Content */}
                     <motion.article 
                         ref={articleRef}
@@ -144,8 +199,13 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                         variants={fadeInUp}
                         transition={{ duration: 0.8 }}
                     >
-
-                    <div className="max-w-3xl mx-auto">
+                    <div 
+                        className="max-w-3xl mx-auto rounded-3xl p-6 md:p-10 lg:p-12 shadow-lg border"
+                        style={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            borderColor: 'var(--border-light)'
+                        }}
+                    >
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             rehypePlugins={[rehypeRaw, rehypeSlug, rehypeAutolinkHeadings]}
@@ -271,17 +331,34 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
 
                 {/* Related Posts Section */}
                 {relatedPosts.length > 0 && (
-                    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t" style={{ borderColor: 'var(--border-light)' }}>
+                    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
                         >
-                            <h2 className="text-3xl font-bold mb-8 font-[Eczar]" style={{ color: 'var(--foreground)' }}>
-                                Bài viết liên quan
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {/* Section header */}
+                            <div className="text-center mb-12">
+                                <motion.div
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4"
+                                    style={{ 
+                                        backgroundColor: 'var(--accent-bg)',
+                                        color: 'var(--accent)'
+                                    }}
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    <span className="text-sm font-semibold font-[Work_Sans]">🔗 Bài viết liên quan</span>
+                                </motion.div>
+                                <h2 className="text-3xl md:text-4xl font-bold font-[Eczar]" style={{ color: 'var(--foreground)' }}>
+                                    Tiếp tục khám phá
+                                </h2>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                                 {relatedPosts.map((post, index) => (
                                     <motion.div
                                         key={post.slug}
@@ -289,16 +366,17 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                                        whileHover={{ y: -8 }}
                                     >
                                         <Link href={`/blog/${post.slug}`}>
-                                            <div 
-                                                className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col border"
+                                            <motion.div 
+                                                className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col border relative"
                                                 style={{ 
                                                     backgroundColor: 'var(--card-bg)',
                                                     borderColor: 'var(--border-light)'
                                                 }}
+                                                whileHover={{ y: -8 }}
                                             >
+                                                {/* Image container */}
                                                 <div className="relative h-48 overflow-hidden">
                                                     <Image
                                                         src={post.image}
@@ -307,21 +385,55 @@ export default function BlogPageClient({ metadata, contentMarkdown, slug }: Prop
                                                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                                                         sizes="(max-width: 768px) 100vw, 33vw"
                                                     />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                                                    
+                                                    {/* Category badge */}
+                                                    <div className="absolute top-3 left-3">
+                                                        <span 
+                                                            className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-xl shadow-lg font-[Work_Sans]"
+                                                            style={{
+                                                                backgroundColor: 'var(--accent)',
+                                                                color: 'var(--accent-foreground)'
+                                                            }}
+                                                        >
+                                                            {post.category}
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Reading time badge */}
+                                                    <div className="absolute bottom-3 right-3">
+                                                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium backdrop-blur-xl text-white font-[Work_Sans]" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                                                            <BookOpen className="w-3 h-3" />
+                                                            {post.readTime}
+                                                        </span>
+                                                    </div>
                                                 </div>
+                                                
+                                                {/* Content */}
                                                 <div className="p-5 flex flex-col flex-1">
-                                                    <div className="flex items-center gap-2 text-xs mb-2 font-[Work_Sans]" style={{ color: 'var(--text-muted)' }}>
+                                                    <div className="flex items-center gap-2 text-xs mb-3 font-[Work_Sans]" style={{ color: 'var(--text-muted)' }}>
                                                         <Calendar className="w-3 h-3" />
                                                         {post.date}
                                                     </div>
-                                                    <h3 className="text-lg font-bold mb-2 line-clamp-2 font-[Eczar]" style={{ color: 'var(--foreground)' }}>
+                                                    <h3 className="text-lg font-bold mb-2 line-clamp-2 group-hover:text-[var(--accent)] transition-colors font-[Eczar]" style={{ color: 'var(--foreground)' }}>
                                                         {post.title}
                                                     </h3>
-                                                    <p className="text-sm line-clamp-2 font-[Work_Sans]" style={{ color: 'var(--text)' }}>
+                                                    <p className="text-sm line-clamp-2 mb-4 font-[Work_Sans]" style={{ color: 'var(--text-secondary)' }}>
                                                         {post.excerpt}
                                                     </p>
+                                                    
+                                                    {/* Read more link */}
+                                                    <div className="mt-auto flex items-center gap-2 text-sm font-semibold group-hover:gap-3 transition-all font-[Work_Sans]" style={{ color: 'var(--accent)' }}>
+                                                        Đọc tiếp
+                                                        <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </div>
                                                 </div>
-                                            </div>
+
+                                                {/* Hover effect overlay */}
+                                                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[var(--accent)] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none" />
+                                            </motion.div>
                                         </Link>
                                     </motion.div>
                                 ))}

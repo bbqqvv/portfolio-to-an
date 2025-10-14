@@ -2,13 +2,14 @@ import { getPostBySlug } from "@/lib/api"
 import BlogPageClient from "./components/BlogPageClient"
 
 interface Props {
-    params: { slug: string }
+    params: Promise<{ slug: string }>
 }
 
 export default async function BlogPage({ params }: Props) {
-    const { metadata, content } = getPostBySlug(params.slug)
+    const { slug } = await params
+    const { metadata, content } = getPostBySlug(slug)
 
     return (
-        <BlogPageClient metadata={metadata} contentMarkdown={content} slug={params.slug} />
+        <BlogPageClient metadata={metadata} contentMarkdown={content} slug={slug} />
     )
 }

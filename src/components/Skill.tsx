@@ -28,7 +28,11 @@ export default function SkillComponent() {
         <div
             id="skill"
             ref={containerRef}
-            className="flex flex-col items-center p-4 sm:p-6 md:p-8 w-full e dark:bg-[#0F141C]"
+            className="flex flex-col items-center w-full p-4 sm:p-6 md:p-8 
+  bg-gradient-to-b from-pink-50 via-purple-50/30 to-white text-black
+  dark:from-[#0F141C] dark:via-[#1a1f2e] dark:to-[#0F141C] dark:text-white"
+
+
         >
             <motion.div
                 className="w-full max-w-4xl mx-auto"
