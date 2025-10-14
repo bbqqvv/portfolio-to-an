@@ -28,11 +28,11 @@ export default function SkillComponent() {
         <div
             id="skill"
             ref={containerRef}
-            className="flex flex-col items-center w-full p-4 sm:p-6 md:p-8 
-  bg-gradient-to-b from-pink-50 via-purple-50/30 to-white text-black
-  dark:from-[#0F141C] dark:via-[#1a1f2e] dark:to-[#0F141C] dark:text-white"
-
-
+            className="flex flex-col items-center w-full p-4 sm:p-6 md:p-8"
+            style={{
+                backgroundColor: 'var(--background-1)',
+                color: 'var(--foreground)'
+            }}
         >
             <motion.div
                 className="w-full max-w-4xl mx-auto"
@@ -42,10 +42,10 @@ export default function SkillComponent() {
                 animate={reduceMotion ? 'visible' : isInView ? 'visible' : 'hidden'}
                 transition={transition}
             >
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center  dark:text-white font-[Eczar]" >
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center font-[Eczar]" style={{ color: 'var(--foreground)' }}>
                     Kỹ năng của tôi
                 </h2>
-                <p className="mb-6 md:mb-8 text-center max-w-2xl mx-auto font-[Work_Sans] text-base sm:text-lg md:text-xl dark:text-white">
+                <p className="mb-6 md:mb-8 text-center max-w-2xl mx-auto font-[Work_Sans] text-base sm:text-lg md:text-xl" style={{ color: 'var(--text)' }}>
                     Một cái nhìn về những kỹ năng mà tôi sở hữu và ứng dụng trong công việc.
                 </p>
 
@@ -68,10 +68,10 @@ export default function SkillComponent() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <p className="mb-3 font-[Work_Sans] text-base sm:text-lg  dark:text-white" >
+                            <p className="mb-3 font-[Work_Sans] text-base sm:text-lg" style={{ color: 'var(--text)' }}>
                                 {skills[currentIndex].text}
                             </p>
-                            <p className="font-semibold font-[Work_Sans]  dark:text-white" >
+                            <p className="font-semibold font-[Work_Sans]" style={{ color: 'var(--foreground)' }}>
                                 {skills[currentIndex].author}
                             </p>
                         </motion.div>
@@ -85,10 +85,10 @@ export default function SkillComponent() {
                             animate={{ opacity: 0.6, x: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <p className="mb-3 font-[Work_Sans] text-base sm:text-lg  dark:text-white" >
+                            <p className="mb-3 font-[Work_Sans] text-base sm:text-lg" style={{ color: 'var(--text)' }}>
                                 {skills[(currentIndex + 1) % skills.length].text}
                             </p>
-                            <p className="font-semibold font-[Work_Sans]  dark:text-white">
+                            <p className="font-semibold font-[Work_Sans]" style={{ color: 'var(--foreground)' }}>
                                 {skills[(currentIndex + 1) % skills.length].author}
                             </p>
                         </motion.div>
